@@ -8,66 +8,66 @@ class TestApp(TestCase):
         self.app = App()
 
     def test_loginSuccess(self):
-        # User from any account (provided they have an account) logs in
-        result = self.app.command("login username password")
+        # Users from any account (provided they have an account) logs in
+        result = self.app.command("login Usersname password")
         self.assertEqual(result, "Login successful.")
 
     def test_loginFailure(self):
-        # User from any account (provided they have an account) logs in with a wrong password or username
-        result = self.app.command("login username password")
-        self.assertEqual(result, "Invalid password or username.")
+        # Users from any account (provided they have an account) logs in with a wrong password or Usersname
+        result = self.app.command("login Usersname password")
+        self.assertEqual(result, "Invalid password or Usersname.")
 
     def test_createAccountSuccess(self):
         # Supervisor logged in, creating account with any role
-        result = self.app.command("createAccount username password ta")
-        self.assertEquals(result, "Account username created successfully.")
+        result = self.app.command("createAccount Usersname password ta")
+        self.assertEquals(result, "Account Usersname created successfully.")
 
         # Administrator logged in, creating account of Instructor or TA
-        result = self.app.command("createAccount username password ta")
-        self.assertEquals(result, "Account username created successfully.")
+        result = self.app.command("createAccount Usersname password ta")
+        self.assertEquals(result, "Account Usersname created successfully.")
 
     def test_createAccountFail(self):
-        # Eligible user creating duplicate user
-        result = self.app.command("createAccount username password ta")
-        self.assertEquals(result, "Account username already exists!")
+        # Eligible Users creating duplicate Users
+        result = self.app.command("createAccount Usersname password ta")
+        self.assertEquals(result, "Account Usersname already exists!")
 
         # Administrator logged in, creating account of Administrator
-        result = self.app.command("createAccount username password administrator")
+        result = self.app.command("createAccount Usersname password administrator")
         self.assertEquals(result, "Permission denied - Cannot create account with that role!")
 
-        # Ineglible user logged in, creating account of any role
-        result = self.app.command("createAccount username password ta")
+        # Ineglible Users logged in, creating account of any role
+        result = self.app.command("createAccount Usersname password ta")
         self.assertEquals(result, "Permission denied - Your role may not create accounts!")
 
     def test_deleteAccountSuccess(self):
-        # Eligible user logged in, deleting account with any role
-        result = self.app.command("deleteAccount username")
-        self.assertEquals(result, "Account username deleted successfully.")
+        # Eligible Users logged in, deleting account with any role
+        result = self.app.command("deleteAccount Usersname")
+        self.assertEquals(result, "Account Usersname deleted successfully.")
 
     def test_deleteAccountFail(self):
-        # Eligible user logged in, deleting nonexistent account
-        result = self.app.command("deleteAccount username")
-        self.assertEquals(result, "Account username does not exist!")
+        # Eligible Users logged in, deleting nonexistent account
+        result = self.app.command("deleteAccount Usersname")
+        self.assertEquals(result, "Account Usersname does not exist!")
 
         # Administrator logged in, deleting administrator or supervisor account
-        result = self.app.command("deleteAccount username")
+        result = self.app.command("deleteAccount Usersname")
         self.assertEquals(result, "Permission denied - your role may not delete accounts of these type!")
 
-        # Ineligible user logged in, deleting account of any role
-        result = self.app.command("deleteAccount username")
-        self.assertEquals(result, "Account username deleted successfully.")
+        # Ineligible Users logged in, deleting account of any role
+        result = self.app.command("deleteAccount Usersname")
+        self.assertEquals(result, "Account Usersname deleted successfully.")
 
     def test_createCourseSuccess(self):
-        # Eligible user logged in, create course
+        # Eligible Users logged in, create course
         result = self.app.command("createCourse courseName department courseNumber")
         self.assertEquals(result, "Course courseName created successfully.")
 
     def test_createCourseFail(self):
-        # Eligible user logged in, create duplicate course
+        # Eligible Users logged in, create duplicate course
         result = self.app.command("createCourse courseName department courseNumber")
         self.assertEquals(result, "Course courseName already exists!")
 
-        # Ineigible user logged in, create course
+        # Ineigible Users logged in, create course
         result = self.app.command("createCourse courseName department courseNumber")
         self.assertEquals(result, "Permission Denied - Your role may not create courses!")
 
@@ -87,7 +87,7 @@ class TestApp(TestCase):
         self.assertEqual(result, "Successfully added instructor to course")
 
     def test_assignInstructorPermissionDenied(self):
-        # User who is not a supervisor tries to add an instructor to a course
+        # Users who is not a supervisor tries to add an instructor to a course
         result = self.app.command("assignInstructor instructor course")
         self.assertEqual(result, "Permission denied - your role may not add instructors to courses")
 
@@ -107,7 +107,7 @@ class TestApp(TestCase):
         self.assertEqual(result, "Successfully removed instructor from course")
 
     def test_removeInstructorPermissionDenied(self):
-        # User who is not a supervisor tries to remove an instructor from a course
+        # Users who is not a supervisor tries to remove an instructor from a course
         result = self.app.command("removeInstructor instructor course")
         self.assertEqual(result, "Permission denied - your role may not remove instructors from courses")
 
@@ -127,7 +127,7 @@ class TestApp(TestCase):
         self.assertEqual(result, "Successfully added TA to course")
 
     def test_assignTAToCoursePermissionDenied(self):
-        # User who is not a supervisor tries to add a TA to a course
+        # Users who is not a supervisor tries to add a TA to a course
         result = self.app.command("assignTACourse TA course")
         self.assertEqual(result, "Permission denied - your role may not add TA's to courses")
 
@@ -147,7 +147,7 @@ class TestApp(TestCase):
         self.assertEqual(result, "Successfully removed TA from course")
 
     def test_removeTAFromCoursePermissionDenied(self):
-        # User who is not a supervisor tries to remove a TA from a course
+        # Users who is not a supervisor tries to remove a TA from a course
         result = self.app.command("removeTACourse TA course")
         self.assertEqual(result, "Permission denied - your role may not remove TA's from courses")
 
@@ -167,7 +167,7 @@ class TestApp(TestCase):
         self.assertEqual(result, "Successfully added TA to lab")
 
     def test_assignTAToLabPermissionDenied(self):
-        # User tries to add TA to lab permission denied
+        # Users tries to add TA to lab permission denied
         result = self.app.command("assignTALab TA lab")
         self.assertEqual(result, "Permission denied - your role may not add TAs to lab sections")
 
@@ -187,7 +187,7 @@ class TestApp(TestCase):
         self.assertEqual(result, "Successfully removed TA from lab")
 
     def test_removeTAFromLabPermissionDenied(self):
-        # User tries to remove TA from lab permission denied
+        # Users tries to remove TA from lab permission denied
         result = self.app.command("removeTALab TA lab")
         self.assertEqual(result, "Permission denied - your role may not remove TAs from lab sections")
 
@@ -202,57 +202,57 @@ class TestApp(TestCase):
         self.assertEqual(result, "Lab section lab does not exist")
 
     def test_editOwnContactInfoSuccess(self):
-        # User successfully edits a field in their contact info
+        # Users successfully edits a field in their contact info
         result = self.app.command("editOwnContactInfo field revision")
         self.assertEqual(result, "field successfully revised")
 
     def test_editOwnContactInfoFieldDoesNotExist(self):
-        # User failures to edit a field in their contact info because it doesn't exist
+        # Users failures to edit a field in their contact info because it doesn't exist
         result = self.app.command("editOwnContactInfo field revision")
         self.assertEqual(result, "Field field does not exist")
 
     def test_readTAAssignmentSuccess(self):
-        # User reads TA assignments
+        # Users reads TA assignments
         result = self.app.command("readTAAssignment TA")
         self.assertEqual(result, "ta info info")
 
     def test_resdTAAssignmentFailure(self):
-        # User tries to look at a TA that doesn't exist
+        # Users tries to look at a TA that doesn't exist
         result = self.app.command("readTAAssignment TA")
         self.assertEqual(result, "TA ta doesn't exist")
 
     def test_readAllTAAssignment(self):
-        # User reads all TA Assignments
+        # Users reads all TA Assignments
         result = self.app.command("readAllTAAssignments")
         self.assertEqual(result, "TA info info")
 
     def test_readPublicContactInfoSuccess(self):
-        # User reads contact info for another user
-        result = self.app.command("readPublicContactInfo user field")
+        # Users reads contact info for another Users
+        result = self.app.command("readPublicContactInfo Users field")
         self.assertEqual(result, "Public info info")
 
     def test_readPublicContactInfoFailure(self):
-        # User unable to read contact info on invalid user
-        result = self.app.command("readPublicContactInfo user field")
-        self.assertEqual(result, "User user does not exist.")
+        # Users unable to read contact info on invalid Users
+        result = self.app.command("readPublicContactInfo Users field")
+        self.assertEqual(result, "Users Users does not exist.")
 
     def test_editContactInfoSuccess(self):
-        # Edit contact info for user
-        result = self.appcommand("user phonenumber email address officeHours")
+        # Edit contact info for Users
+        result = self.appcommand("Users phonenumber email address officeHours")
         self.assertEqual(result, "Contact info set!")
 
     def test_editContactInfoFail(self):
-        # Edit contact info for user fail
-        result = self.appcommand("user phonenumber email address officeHours")
-        self.assertEqual(result, "User does not exist!")
+        # Edit contact info for Users fail
+        result = self.appcommand("Users phonenumber email address officeHours")
+        self.assertEqual(result, "Users does not exist!")
 
     def test_editAccountInfo(self):
         # Edit account info
-        result = self.appcommand("username newusername password ta")
-        self.assertEqual(result, "User account info changed!")
+        result = self.appcommand("Usersname newUsersname password ta")
+        self.assertEqual(result, "Users account info changed!")
 
     def test_editAccountInfoFail(self):
         # Edit account info
-        result = self.appcommand("username newusername password ta")
-        self.assertEqual(result, "User does not exist!")
+        result = self.appcommand("Usersname newUsersname password ta")
+        self.assertEqual(result, "Users does not exist!")
 

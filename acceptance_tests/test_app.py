@@ -1,11 +1,21 @@
 from unittest import TestCase, TestSuite, TextTestRunner, makeSuite
-from app import App
-
+from .app import App
+from django.test import TestCase
+from .testmodels import *
 
 class TestApp(TestCase):
 
     def setUp(self):
         self.app = App()
+        testSUser = Users("testSUName", "password", 8)
+        testSUser.create()
+        testTUser = Users("testTUName", "password", 1)
+        testTUser.create()
+        testCourse = Course("testCName", "testdept", 100)
+        testCourse.create()
+        testTA = TA(False, 0, testTUser)
+        testTA.create()
+
 
     def test_loginSuccess(self):
         # Users from any account (provided they have an account) logs in

@@ -3,8 +3,8 @@ import users
 
 class Course:
 
-    def __init__(self, course_name=None, department=None, course_number=None, instructor=None):
-        """create a course object
+    def __init__(self, course_name, department, course_number, instructor=None):
+        """create a course object requires course name, department, and course number
 
         requires Supervisor or Administrator permissions
 
@@ -26,7 +26,6 @@ class Course:
         self.labs = {}
 
     # createCourse equivalent to constructor? calling createCourse on a course object doesnt make sense
-    # figure out how to check permissions in constructor - create course requires Supervisor or Administrator permissions
 
     def assign_instructor(self, instructor):
         """assign an instructor to a course

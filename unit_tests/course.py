@@ -1,5 +1,6 @@
 import TA
-import users
+import Users
+import Lab
 
 class Course:
 
@@ -21,9 +22,9 @@ class Course:
         self.courseNumber = course_number
         self.instructor = instructor
 
-        self.TAs = {}
+        self.TAs = {}   # Dictionary of TAs where key = username, value = TA object
 
-        self.labs = {}
+        self.labs = {}  # Dictionary of Labs where key = lab number, value = TA object
 
     # createCourse equivalent to constructor? calling createCourse on a course object doesnt make sense
 
@@ -116,8 +117,24 @@ class Course:
 
         print("Instructor of " + self.courseName + " is " + self.instructor)
 
-        # figure out how to print TAs dictionary value - TODO
+        # figure out how to print self.tas dictionary values - TODO
         print("TAs of " + self.courseName + " are " + self.TAs)
 
+    def create_lab_section(self, lab_number, ta = None):
+        """create_lab_section and assign it to this course
+
+        requires supervisor permissions
+
+        :param lab_number:int
+        :param ta:TA
+        :return:None
+        """
+        # check permissions - TODO
+
+        # create lab section for this course with lab number, and optionally specified assigned TA
+        lab_section = Lab(lab_number, ta)
+
+        # add Lab to self.labs with lab number as key, and Lab object as value
+        self.TAs.update({lab_number, lab_section})
 
 

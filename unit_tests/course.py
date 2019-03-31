@@ -1,6 +1,7 @@
-import TA
-import Users
-import Lab
+from unit_tests.TA import TA
+from unit_tests.users import Users
+from unit_tests.lab import Lab
+
 
 class Course:
 
@@ -16,10 +17,13 @@ class Course:
         """
 
         # check permission - TODO
-
+        # Should we check for other
         self.courseName = course_name
         self.department = department
-        self.courseNumber = course_number
+        if course_number.isdigit:
+            self.courseNumber = course_number
+        else:
+            raise ValueError('Course number was not a number')
         self.instructor = instructor
 
         self.TAs = {}   # Dictionary of TAs where key = username, value = TA object
@@ -62,14 +66,14 @@ class Course:
             self.instructor = None
             return True
 
-    def assign_TA(self, ta, grader_status = None, number_of_labs = None):
+    def assign_TA(self, ta, grader_status=None, number_of_labs=None):
         """assign TA user to this course with optionally specified grader status and number of labs
 
         :param ta:User
         :param grader_status:
         :param number_of_labs:
-        :return:
-        """
+        :return:"""
+
 
         # check permission - TODO
 
@@ -77,7 +81,7 @@ class Course:
         ta_to_add = TA(ta, grader_status, number_of_labs)
 
         # add TA to self.TAs with username as key, and TA object as value
-        self.TAs.update({ta.username, ta_to_add})
+        self.TAs.update({ta, ta_to_add})
 
 
 
@@ -86,8 +90,8 @@ class Course:
 
         requires Supervisor permissions
         :param ta:User
-        :return:None
-        """
+        :return:None"""
+
 
         # check permissions - TODO
 
@@ -96,7 +100,7 @@ class Course:
 
         # search TAs dictionary for this course by username of ta to remove as key
         # remove TA if present and return true
-        if 'username_to_remove' in self.TAs:
+        if username_to_remove in self.TAs:
             del self.TAs[username_to_remove]
             return True
 
@@ -118,7 +122,9 @@ class Course:
         print("Instructor of " + self.courseName + " is " + self.instructor)
 
         # figure out how to print self.tas dictionary values - TODO
-        print("TAs of " + self.courseName + " are " + self.TAs)
+        #print("TAs of " + self.courseName + " are " + self.TAs)
+        for keys, values in self.TAs.items():
+            print(keys + " " + values)
 
     def create_lab_section(self, lab_number, ta = None):
         """create_lab_section and assign it to this course
@@ -127,8 +133,8 @@ class Course:
 
         :param lab_number:int
         :param ta:TA
-        :return:None
-        """
+        :return:None"""
+
         # check permissions - TODO
 
         # create lab section for this course with lab number, and optionally specified assigned TA

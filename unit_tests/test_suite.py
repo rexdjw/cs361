@@ -7,5 +7,6 @@ from unit_tests.test_course import TestCourse
 suite = TestSuite()
 suite.addTest(makeSuite(TestContactInfo))
 suite.addTest(makeSuite(TestUser))
+suite.addTest(makeSuite(TestCourse))
 runner = TextTestRunner()
 res=runner.run(suite)

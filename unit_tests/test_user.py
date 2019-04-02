@@ -1,6 +1,7 @@
 import unittest
 
-from unit_tests.users import Users
+from random import randint
+from unit_tests.users.users import Users
 
 
 class TestUser(unittest.TestCase):
@@ -12,49 +13,79 @@ class TestUser(unittest.TestCase):
         self.user.dispose()
         self.user = None
 
-    def test_createAccount(self):
+    def test_create_account(self):
 
-        self.user.createAccount("jayson", "12345", {"Supervisor": True, "Administrator": False, "Instructor": False, "TA": False})
+        self.user.create_account("jayson", "12345", 8)
 
         self.assertTrue(self.user.username == "jayson")
         self.assertFalse(self.user.username == "12345")
 
+    def test_delete_account(self):
 
-    def test_deleteAccount(self):
+        self.user.delete_account()
+        self.assertEqual(self.user.username, None)
 
-        self.assertTrue(self.user.deleteAccount("jayson"))
-        self.assertEqual(self.user.username == None)
+    def test_delete_and_create_account(self):
 
-
-
-    def test_deleteAndCreateAccount(self):
-
-        self.user.createAccount("Sean", "1234",{"Supervisor": True, "Administrator": False, "Instructor": False, "TA": False})
+        self.user.create_account("Sean", "1234", 8)
 
         self.assertEqual("Sean", self.user.username)
         self.assertFalse(self.user.password == "12345")
 
-        self.user.deleteAccount("Sean")
+        self.user.delete_account()
 
         self.assertEqual(None, self.user.username)
         self.assertNotEqual("Sean", self.user.username)
 
+    def test_is_super0(self):
 
-    def test_getRoles(self):
+        self.user.create_account("Sean", "1234", randint(0, 15) | 8)
+        self.assertTrue(self.user.is_super())
 
-        self.user.createAccount("Sean", "1234",{"Supervisor": True, "Administrator": False, "Instructor": False, "TA": False})
+    def test_is_super1(self):
 
-        self.assertEqual({"Supervisor": True, "Administrator": False, "Instructor": False, "TA": False}, self.user.getRoles())
-        self.assertNotEqual({"Supervisor": False, "Administrator": False, "Instructor": False, "TA": False}, self.user.getRoles())
+        self.user.create_account("Sean", "1234", randint(0, 15) & 7)
+        self.assertFalse(self.user.is_super())
 
-    def test_editAccountInfo_Edit_All(self):
-        instructor = Users()
+    def test_is_admin0(self):
 
-        instructor.createAccount("rock", "Ilikeprogramming",{"Supervisor": False, "Administrator": True, "Instructor": False, "TA": False})
+        self.user.create_account("Sean", "1234", randint(0, 15) | 4)
+        self.assertTrue(self.user.is_admin())
 
+    def test_is_admin1(self):
 
-        instructor.editAccountInfo("rock", "jrock", "Ilove361", {"Supervisor": False, "Administrator": False, "Instructor": True, "TA": False})
+        self.user.create_account("Sean", "1234", randint(0, 15) & 11)
+        self.assertFalse(self.user.is_admin())
 
-        self.assertEqual(instructor.username, "jrock")
-        self.assertEqual(instructor.password, "Ilove361")
-        self.assertEqual(instructor.accountRoles, {"Supervisor": False, "Administrator": False, "Instructor": True, "TA": False})
+    def test_is_instructor0(self):
+
+        self.user.create_account("Sean", "1234", randint(0, 15) | 2)
+        self.assertTrue(self.user.is_instructor())
+
+    def test_is_instructor1(self):
+
+        self.user.create_account("Sean", "1234", randint(0, 15) & 13)
+        self.assertFalse(self.user.is_instructor())
+
+    def test_is_ta0(self):
+
+        self.user.create_account("Sean", "1234", randint(0, 15) | 1)
+        self.assertTrue(self.user.is_ta())
+
+    def test_is_ta1(self):
+
+        self.user.create_account("Sean", "1234", randint(0, 15) & 14)
+        self.assertFalse(self.user.is_ta())
+
+    def test_edit_account_info(self):
+        self.user = Users()
+
+        self.user.create_account("rock", "Ilikeprogramming", 0)
+
+        self.user.reset_username("jrock")
+        self.user.reset_password("Ilove361")
+        self.user.reset_roles(2)
+
+        self.assertEqual(self.user.username, "jrock")
+        self.assertEqual(self.user.password, "Ilove361")
+        self.assertEqual(self.user.roles, 2)

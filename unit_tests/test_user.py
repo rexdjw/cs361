@@ -1,7 +1,7 @@
 import unittest
 
 from random import randint
-from unit_tests.users.users import Users
+from unit_tests.users import Users
 
 
 class TestUser(unittest.TestCase):

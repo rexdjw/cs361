@@ -74,16 +74,18 @@ class Course:
         :param number_of_labs:
         :return:"""
 
-
         # check permission - TODO
+        if self.TAs.get(ta.username):
+            raise AssertionError("This TA already exists")
+
+        if (number_of_labs is not None) and (not isinstance(number_of_labs, int) or number_of_labs < 0):
+            raise ValueError('Number of labs is invalid')
 
         # create TA object with optionally specified grader status and number of labs
         ta_to_add = TA(ta, grader_status, number_of_labs)
 
         # add TA to self.TAs with username as key, and TA object as value
-        self.TAs.update({ta, ta_to_add})
-
-
+        self.TAs.update({ta.username: ta_to_add})
 
     def remove_TA(self, ta):
         """ remove TA from course

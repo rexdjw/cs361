@@ -43,5 +43,11 @@ class Users:
         # todo: if ta, display assigned courses and labs
         pass
 
+    @staticmethod
+    def display_users(self, role=None):
+        # todo: display a list of all users
+        # todo: if role is not None, display all users with specified role
+        pass
+
     def dispose(self):
         pass

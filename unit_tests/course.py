@@ -17,10 +17,10 @@ class Course:
         """
 
         # Should we check for other
-        self.courseName = course_name
+        self.course_name = course_name
         self.department = department
         if course_number.isdigit:
-            self.courseNumber = course_number
+            self.course_number = course_number
         else:
             raise ValueError('Course number was not a number')
         self.instructor = instructor
@@ -112,7 +112,7 @@ class Course:
         # display how? print out? return?
         # are there permissions associated with this?
 
-        print("Instructor of " + self.courseName + " is " + self.instructor)
+        print("Instructor of " + self.course_name + " is " + self.instructor)
 
         for x in self.TAs.keys():
             print("TA of is " + (self.TAs.get(x)).ta.username)

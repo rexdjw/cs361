@@ -16,7 +16,6 @@ class Course:
         :param instructor:user
         """
 
-        # check permission - TODO
         # Should we check for other
         self.courseName = course_name
         self.department = department
@@ -42,8 +41,6 @@ class Course:
         :return: None
         """
 
-        # check permissions - TODO
-
         self.instructor = instructor
 
     def remove_instructor(self):
@@ -53,8 +50,6 @@ class Course:
 
         :return: Boolean
         """
-
-        # check permissions - TODO
 
         # if there is no instructor return false
 
@@ -74,7 +69,6 @@ class Course:
         :param number_of_labs:
         :return:"""
 
-        # check permission - TODO
         if self.TAs.get(ta.username):
             raise AssertionError("This TA already exists")
 
@@ -93,9 +87,6 @@ class Course:
         requires Supervisor permissions
         :param ta:User
         :return:None"""
-
-
-        # check permissions - TODO
 
         # use username of ta to remove as key
         username_to_remove = ta.username
@@ -123,12 +114,10 @@ class Course:
 
         print("Instructor of " + self.courseName + " is " + self.instructor)
 
-        # figure out how to print self.tas dictionary values - TODO
-        #print("TAs of " + self.courseName + " are " + self.TAs)
-        for keys, values in self.TAs.items():
-            print(keys + " " + values)
+        for x in self.TAs.keys():
+            print("TA of is " + (self.TAs.get(x)).ta.username)
 
-    def create_lab_section(self, lab_number, ta = None):
+    def create_lab_section(self, lab_number, ta=None):
         """create_lab_section and assign it to this course
 
         requires supervisor permissions
@@ -137,12 +126,10 @@ class Course:
         :param ta:TA
         :return:None"""
 
-        # check permissions - TODO
-
         # create lab section for this course with lab number, and optionally specified assigned TA
         lab_section = Lab(lab_number, ta)
 
         # add Lab to self.labs with lab number as key, and Lab object as value
-        self.TAs.update({lab_number, lab_section})
+        self.labs.update({lab_number: lab_section})
 
 

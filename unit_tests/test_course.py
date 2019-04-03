@@ -20,16 +20,16 @@ class TestCourse(unittest.TestCase):
     def test_init_with_instructor(self):
         course = Course(course_name="testCourse", department="testDepartment", course_number="111",
                         instructor="testInstructor")
-        self.assertTrue(course.courseName == "testCourse")
+        self.assertTrue(course.course_name == "testCourse")
         self.assertTrue(course.department == "testDepartment")
-        self.assertTrue(course.courseNumber == "111")
+        self.assertTrue(course.course_number == "111")
         self.assertTrue(course.instructor == "testInstructor")
 
     def test_init_without_instructor(self):
         course = Course(course_name="testCourse", department="testDepartment", course_number="111")
-        self.assertTrue(course.courseName == "testCourse")
+        self.assertTrue(course.course_name == "testCourse")
         self.assertTrue(course.department == "testDepartment")
-        self.assertTrue(course.courseNumber == "111")
+        self.assertTrue(course.course_number == "111")
         self.assertIsNone(course.instructor)
 
     def test_init_with_invalid_courseNumber(self):

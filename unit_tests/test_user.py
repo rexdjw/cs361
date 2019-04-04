@@ -20,10 +20,14 @@ class TestUser(unittest.TestCase):
         self.assertTrue(self.user.username == "jayson")
         self.assertFalse(self.user.username == "12345")
 
+        # todo: assert that this user is now in the db
+
     def test_delete_account(self):
 
         self.user.delete_account()
         self.assertEqual(self.user.username, None)
+
+        # todo: assert that this user is no longer in the db
 
     def test_delete_and_create_account(self):
 
@@ -32,10 +36,14 @@ class TestUser(unittest.TestCase):
         self.assertEqual("Sean", self.user.username)
         self.assertFalse(self.user.password == "12345")
 
+        # todo: assert that this user is now in the db
+
         self.user.delete_account()
 
         self.assertEqual(None, self.user.username)
         self.assertNotEqual("Sean", self.user.username)
+
+        # todo: assert that this user is no longer in the db
 
     def test_is_super0(self):
 

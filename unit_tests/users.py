@@ -3,8 +3,6 @@ class Users:
     def __init__(self, username=None, password=None, roles=0, contact_info=None):
         """create a course object requires course name, department, and course number
 
-        requires Supervisor or Administrator permissions
-
         :param username:string
         :param password:string
         :param roles:int in range 0-15
@@ -14,7 +12,18 @@ class Users:
         self.password = password
         self.roles = roles
         self.contact_info = contact_info
-        # todo: validate roles input
+
+    @staticmethod
+    def display_users(role=None):
+        """display all users in the database, or all users of the specified role if provided
+
+        this is provided as a static method since it is not particular to any given user
+
+        :param role:int in range 0-15
+        """
+        # todo: display a list of all users
+        # todo: if role is not None, display all users with specified role
+        pass
 
     def create_account(self, username, password, roles):
         """create a new user object and add it to the database
@@ -26,16 +35,40 @@ class Users:
         self.username = username
         self.password = password
         self.roles = roles
-        # todo: validate roles input
         # todo: add to db
 
     def delete_account(self):
-        """remove this user object from the db"""
+        """remove this user object from the db and voids all fields"""
         self.username = None
         self.password = None
+        self.roles = None
         self.contact_info = None
-        self.roles = 0
-        # todo: remove from db
+        # todo: query db for this username - if it exists, remove it
+
+    def display_assignments(self, role):
+        # todo: if instructor, display assigned courses
+        # todo: if ta, display assigned courses and labs
+        pass
+
+    def dispose(self):
+        # todo: what is this?
+        pass
+
+    def is_super(self):
+        """query whether this user object has supervisor permission"""
+        return (self.roles & 8) == 8
+
+    def is_admin(self):
+        """query whether this user object has administrator permission"""
+        return (self.roles & 4) == 4
+
+    def is_instructor(self):
+        """query whether this user object has instructor permission"""
+        return (self.roles & 2) == 2
+
+    def is_ta(self):
+        """query whether this user object has ta permission"""
+        return (self.roles & 1) == 1
 
     def reset_username(self, new_username):
         """change the username of this user object
@@ -56,36 +89,5 @@ class Users:
 
         :param new_roles:int in range 0-15
         """
-        #todo: validate roles input
+        # todo: validate roles input
         self.roles = new_roles
-
-    def is_super(self):
-        """query whether this user object has supervisor permission"""
-        return (self.roles & 8) == 8
-
-    def is_admin(self):
-        """query whether this user object has administrator permission"""
-        return (self.roles & 4) == 4
-
-    def is_instructor(self):
-        """query whether this user object has instructor permission"""
-        return (self.roles & 2) == 2
-
-    def is_ta(self):
-        """query whether this user object has ta permission"""
-        return (self.roles & 1) == 1
-
-    def display_assignments(self, role):
-        # todo: if instructor, display assigned courses
-        # todo: if ta, display assigned courses and labs
-        pass
-
-    @staticmethod
-    def display_users(self, role=None):
-        # todo: display a list of all users
-        # todo: if role is not None, display all users with specified role
-        pass
-
-    def dispose(self):
-        # todo: ???
-        pass

@@ -248,21 +248,26 @@ class TestApp(TestCase):
 
     def test_editContactInfoSuccess(self):
         # Edit contact info for Users
-        result = self.appcommand("Users phonenumber email address officeHours")
+        result = self.app.command("Users phonenumber email address officeHours")
         self.assertEqual(result, "Contact info set!")
 
     def test_editContactInfoFail(self):
         # Edit contact info for Users fail
-        result = self.appcommand("Users phonenumber email address officeHours")
+        result = self.app.command("Users phonenumber email address officeHours")
         self.assertEqual(result, "Users does not exist!")
 
     def test_editAccountInfo(self):
         # Edit account info
-        result = self.appcommand("Usersname newUsersname password ta")
+        result = self.app.command("Usersname newUsersname password ta")
         self.assertEqual(result, "Users account info changed!")
 
     def test_editAccountInfoFail(self):
         # Edit account info
-        result = self.appcommand("Usersname newUsersname password ta")
+        result = self.app.command("Usersname newUsersname password ta")
         self.assertEqual(result, "Users does not exist!")
 
+    def test_unkCommand(self):
+        """unrecognized command"""
+        cmd = "skjkdhjfhjskhk"
+        result = self.app.command(cmd)
+        self.assertEqual(result, "Unrecognized command: " + cmd)

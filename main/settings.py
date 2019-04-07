@@ -18,8 +18,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     'main',
+    'course',
+    'users',
+    'ta'
 ]
 
 MIDDLEWARE = [
@@ -72,6 +74,8 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
+
+AUTH_USER_MODEL = 'users.Users'
 
 STATIC_URL = '/static/'
 

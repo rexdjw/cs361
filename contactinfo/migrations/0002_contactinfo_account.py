@@ -10,13 +10,13 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('ta', '0001_initial'),
+        ('contactinfo', '0001_initial'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='ta',
+            model_name='contactinfo',
             name='account',
             field=models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to=settings.AUTH_USER_MODEL),
         ),

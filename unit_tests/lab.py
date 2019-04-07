@@ -1,11 +1,6 @@
-from django.db import models
+class Lab:
 
-# Create your models here.
-class Lab(models.Model):
-    labNumber = models.IntegerField()
-
-    @classmethod
-    def create(cls, lab_number, ta = None):
+    def __init__(self, lab_number, ta = None):
         """create lab object with optionally assigned ta
 
         requires supervisor permissions
@@ -16,8 +11,8 @@ class Lab(models.Model):
 
         # check permissions - TODO
 
-        cls.lab_number = lab_number
-        cls.ta = ta
+        self.lab_number = lab_number
+        self.ta = ta
 
 
     def assign_ta(self, ta):
@@ -49,5 +44,5 @@ class Lab(models.Model):
             self.ta = None
             return True
 
-    def __str__(self):
-        return self.labNumber
+
+

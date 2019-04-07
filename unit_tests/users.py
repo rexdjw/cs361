@@ -1,4 +1,13 @@
-class Users:
+from django.db import models
+from .contact_info import ContactInfo
+
+
+class Users(models.Model):
+
+    username = models.CharField(max_length=16)
+    password = models.CharField(max_length=32)
+    roles = models.IntegerField()
+    contact_info = models.ForeignKey(ContactInfo, on_delete=models.CASCADE)
 
     def __init__(self, username=None, password=None, roles=0, contact_info=None):
         """create a course object requires course name, department, and course number
@@ -21,8 +30,8 @@ class Users:
 
         :param role:int in range 0-15
         """
-        # todo: display a list of all users
-        # todo: if role is not None, display all users with specified role
+        # todo: return a list of all users
+        # todo: if role is not None, return all users with specified role
         pass
 
     def create_account(self, username, password, roles):
@@ -35,7 +44,7 @@ class Users:
         self.username = username
         self.password = password
         self.roles = roles
-        # todo: add to db
+        self.save()
 
     def delete_account(self):
         """remove this user object from the db and voids all fields"""
@@ -89,5 +98,4 @@ class Users:
 
         :param new_roles:int in range 0-15
         """
-        # todo: validate roles input
         self.roles = new_roles

@@ -5,17 +5,8 @@ class App:
     # createCourse
     # login
 
-    def tokenize(self, s):
-        substrings = []
-        rest = s
-        while len(rest) > 0:
-            index = rest.find(' ')
-            substrings.append(rest[index:])
-            rest = rest[:index + 1]
-        return substrings
-
     def command(self, s):
-        tokens = self.tokenize(s)
+        tokens = s.split
         cmd = tokens[0]
         args = tokens[1:]
         if cmd == "login":

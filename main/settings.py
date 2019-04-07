@@ -21,7 +21,9 @@ INSTALLED_APPS = [
     'main',
     'course',
     'users',
-    'ta'
+    'ta',
+    'lab',
+    'contactinfo'
 ]
 
 MIDDLEWARE = [

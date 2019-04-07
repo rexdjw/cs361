@@ -5,10 +5,8 @@ from django.db import models
 from django.core.validators import MinLengthValidator
 
 class Users(AbstractUser):
-    # username = models.CharField(max_length=16)
-    # password = models.CharField(max_length=16,  validators=[MinLengthValidator(8)])
     roles = models.IntegerField(null=True)
-    # contact_info = models.ForeignKey(ContactInfo, on_delete=models.CASCADE)
+
 
     @classmethod
     def create(cls, username=None, password=None, roles=0, contact_info=None):

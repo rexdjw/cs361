@@ -49,7 +49,7 @@ class ContactInfo(models.Model):
 
         :return:List[String]
         """
-        return [self.name, self.phone_number, self.email, self.address, self.officeHours, self.officeNumber]
+        return [self.name, self.phoneNumber, self.email, self.address, self.officeHours, self.officeNumber]
 
 
     def __str__(self):

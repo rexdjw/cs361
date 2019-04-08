@@ -59,5 +59,25 @@ class App:
             # todo
             return
         # todo : support other commands
+        elif cmd == "assignInstructor":
+            return
+        elif cmd == "removeInstructor":
+            return
+        elif cmd == "assignTACourse":
+            return
+        elif cmd == "removeTACourse":
+            return
+        elif cmd == "assignTALab":
+            return
+        elif cmd == "removeTALab":
+            return
+        elif cmd == "courseAssignments":
+            return
+        elif cmd == "readTAAssignment":
+            return
+        elif cmd == "readAllTAAssignment":
+            return
+        elif cmd == "readPublicContactInfo":
+            return
         else:
             return "Unrecognized command: " + cmd

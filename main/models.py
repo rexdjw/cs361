@@ -35,7 +35,7 @@ class YourClass:
         user = Users.objects.get(username=username)
         if check_password(password, user.password):
           login(request, user)
-          return "Login successful!"
+          return "Login successful."
         else:
           return "Login failed, wrong password"
       except:
@@ -51,7 +51,7 @@ class YourClass:
       coursenumber = args[2]
       permission = True  # todo : check permissions of active user
       Course.create(coursename, department, coursenumber).save()
-      return "Course created"
+      return "Course created successfully."
     elif cmd == "createAccount":
       if len(args) < 3:
         return "Insufficient arguments for command " + cmd
@@ -61,17 +61,17 @@ class YourClass:
       try:
         permission = self.getActiveUser(request).is_admin
       except:
-        return "Failed"
+        return "Permission denied - Your role may not create accounts!"
       greater = True  # todo : check that active user is_above(role)
       exists = False  # todo : query the database to find out if the active user exists
       if permission:
         if exists:
-          return "Account " + username + " already exists!"
+          return "Account already exists!"
         elif not greater:
-          return "Permission denied - Cannot create account with that role!"
+          return "Permission denied - Your role may not create accounts!"
         else:
           Users.create(username, password, role).save()
-          return "Account " + username + " created successfully."
+          return "Account created successfully."
       else:
         return "Permission denied - Your role may not create accounts!"
     elif cmd == "deleteAccount":
@@ -91,9 +91,9 @@ class YourClass:
         u = self.getActiveUser(request)
         if len(ContactInfo.objects.filter(account=u)) == 0:
           ContactInfo.create(u.username, args[0], args[1], args[2], args[3], args[4], args[5]).save()
-          return "Success"
+          return "field successfully revised"
         u.editContactInfo(u, args[0], args[1], args[2], args[3], args[4], args[5])
-        return "Success"
+        return "field successfully revised"
       except:
         return "Login a user first"
     # todo : support other commands
@@ -101,7 +101,7 @@ class YourClass:
       course = Course.objects.get(courseName=args[0])
       user = Users.objects.get(username=args[1])
       course.assign_instructor(user)
-      return "Success"
+      return "Successfully added instructor to course"
     elif cmd == "removeInstructor":
       return
     elif cmd == "assignTACourse":
@@ -110,7 +110,7 @@ class YourClass:
       ta = TA.create(user,True, 1)
       ta.save()
       course.assign_TA(ta)
-      return "Success"
+      return "Successfully added TA to course"
       return
     elif cmd == "removeTACourse":
       return

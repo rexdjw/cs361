@@ -19,27 +19,31 @@ class TestApp(TestCase):
 
     def test_loginSuccess(self):
         # Users from any account (provided they have an account) logs in
-        result = self.app.command("login Usersname password")
+        result = self.app.command("login Username password")
         self.assertEqual(result, "Login successful.")
 
     def test_loginFailure(self):
-        # Users from any account (provided they have an account) logs in with a wrong password or Usersname
-        result = self.app.command("login Usersname password")
-        self.assertEqual(result, "Invalid password or Usersname.")
+        # Users from any account (provided they have an account) logs in with a wrong password
+        result = self.app.command("login Username password")
+        self.assertEqual(result, "Login failed, wrong password")
+
+    # TODO - loginFAilure no such user
+
+    # TODO - logout
 
     def test_createAccountSuccess(self):
         # Supervisor logged in, creating account with any role
         result = self.app.command("createAccount username password 8")
-        self.assertEquals(result, "Account username created successfully.")
+        self.assertEquals(result, "Account created successfully.")
 
         # Administrator logged in, creating account of Instructor or TA
         result = self.app.command("createAccount username password 2")
-        self.assertEquals(result, "Account username created successfully.")
+        self.assertEquals(result, "Account created successfully.")
 
     def test_createAccountFail(self):
         # Eligible Users creating duplicate Users
         result = self.app.command("createAccount username password 1")
-        self.assertEquals(result, "Account username already exists!")
+        self.assertEquals(result, "Account already exists!")
 
         # Administrator logged in, creating account of Administrator
         result = self.app.command("createAccount username password 8")
@@ -51,26 +55,26 @@ class TestApp(TestCase):
 
     def test_deleteAccountSuccess(self):
         # Eligible Users logged in, deleting account with any role
-        result = self.app.command("deleteAccount Usersname")
-        self.assertEquals(result, "Account Usersname deleted successfully.")
+        result = self.app.command("deleteAccount Username")
+        self.assertEquals(result, "User deleted")
 
     def test_deleteAccountFail(self):
         # Eligible Users logged in, deleting nonexistent account
-        result = self.app.command("deleteAccount Usersname")
-        self.assertEquals(result, "Account Usersname does not exist!")
+        result = self.app.command("deleteAccount Username")
+        self.assertEquals(result, "No such user")
 
         # Administrator logged in, deleting administrator or supervisor account
-        result = self.app.command("deleteAccount Usersname")
+        result = self.app.command("deleteAccount Username")
         self.assertEquals(result, "Permission denied - your role may not delete accounts of these type!")
 
         # Ineligible Users logged in, deleting account of any role
-        result = self.app.command("deleteAccount Usersname")
-        self.assertEquals(result, "Account Usersname deleted successfully.")
+        result = self.app.command("deleteAccount Username")
+        self.assertEquals(result, "Account Username deleted successfully.")
 
     def test_createCourseSuccess(self):
         # Eligible Users logged in, create course
         result = self.app.command("createCourse courseName department courseNumber")
-        self.assertEquals(result, "Course courseName created successfully.")
+        self.assertEquals(result, "Course created successfully.")
 
     def test_createCourseFail(self):
         # Eligible Users logged in, create duplicate course
@@ -211,12 +215,14 @@ class TestApp(TestCase):
         result = self.app.command("removeTALab TA lab")
         self.assertEqual(result, "Lab section lab does not exist")
 
-    def test_editOwnContactInfoSuccess(self):
+    def test_editContactInfoSuccess(self):
         # Users successfully edits a field in their contact info
-        result = self.app.command("editOwnContactInfo field revision")
+        result = self.app.command("editContactInfo field revision")
         self.assertEqual(result, "field successfully revised")
 
-    def test_editOwnContactInfoFieldDoesNotExist(self):
+    # TODO - editContactInfo while not logged in
+
+    def test_editContactInfoFieldDoesNotExist(self):
         # Users failures to edit a field in their contact info because it doesn't exist
         result = self.app.command("editOwnContactInfo field revision")
         self.assertEqual(result, "Field field does not exist")

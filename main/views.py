@@ -9,7 +9,7 @@ class Home(View):
     yourInstance = YourClass()
     commandInput = request.POST["command"]
     if commandInput:
-      response = yourInstance.command(commandInput)
+      response = yourInstance.command(commandInput, request)
     else:
       response = ""
     return render(request, 'main/index.html',{"message":response})

@@ -11,6 +11,7 @@ class UserGroup(models.Model):
     name = models.CharField(max_length=25)
     roles = models.IntegerField()
 
+
     class Meta:
         verbose_name_plural = "User Groups"
 
@@ -21,6 +22,7 @@ class UserGroup(models.Model):
 class Users(AbstractUser):
     roles = models.IntegerField(null=True, default=0)
     user_group = models.ForeignKey(UserGroup, on_delete=models.CASCADE, blank=True, null=True)
+    contact_info = models.ForeignKey(ContactInfo, null=True, on_delete=models.CASCADE)
 
     @classmethod
     def list_by_user_group_id(cls, user_group_id):
@@ -34,10 +36,8 @@ class Users(AbstractUser):
         :param roles:int in range 0-15
         :param contact_info:contact_info
         """
-        cls.username = username
-        cls.password = password
-        cls.roles = roles
-        cls.contact_info = contact_info
+        return cls(username=username, password=password, roles=roles, contact_info=contact_info)
+
 
     @staticmethod
     def display_users(role=None):

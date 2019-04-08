@@ -10,8 +10,8 @@ class App:
 
     def command(self, s):
         tokens = s.split
-        cmd = tokens.head
-        args = tokens.tail
+        cmd = tokens[0]
+        args = tokens[1:]
         if cmd == "login":
             if len(args) < 2:
                 return "Insufficient arguments for command " + cmd

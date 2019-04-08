@@ -2,7 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 # Create your models here.
-from django.core.validators import MinLengthValidator
+
 
 from contactinfo.models import ContactInfo
 
@@ -22,7 +22,7 @@ class UserGroup(models.Model):
 class Users(AbstractUser):
     roles = models.IntegerField(null=True, default=0)
     user_group = models.ForeignKey(UserGroup, on_delete=models.CASCADE, blank=True, null=True)
-    contact_info = models.ForeignKey(ContactInfo, null=True, on_delete=models.CASCADE)
+    contact_info = models.OneToOneField(ContactInfo, null=True, on_delete=models.CASCADE)
 
     @classmethod
     def list_by_user_group_id(cls, user_group_id):
@@ -72,6 +72,30 @@ class Users(AbstractUser):
         # todo: if instructor, display assigned courses
         # todo: if ta, display assigned courses and labs
         pass
+
+    def editContactInfo(self, account, name, phone_number, email, address, office_hours,
+                        office_number):
+        """Edit contact information specifying desired fields
+
+        Requires permissions of supervisor or of the user associated with this contact information
+
+        :param name:string
+        :param phone_number:string
+        :param email:string
+        :param address:string
+        :param office_hours:string
+        :param office_number:string
+        :return:None
+        """
+
+        ci = ContactInfo.objects.filter(account=account)[0]
+        ci.name = name
+        ci.phoneNumber = phone_number
+        ci.email = email
+        ci.address = address
+        ci.officeHours = office_hours
+        ci.officeNumber = office_number
+        ci.save()
 
     def dispose(self):
         # todo: what is this?

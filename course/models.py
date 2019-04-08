@@ -1,6 +1,7 @@
 from django.db import models
 
 # Create your models here.
+from lab.models import Lab
 from ta.models import TA
 
 
@@ -9,6 +10,8 @@ class Course(models.Model):
     department = models.CharField(max_length=64)
     courseNumber = models.IntegerField()
     TAs =  models.ManyToManyField(TA)
+    instructor = models.ForeignKey('users.Users', null=True, on_delete=models.DO_NOTHING)
+    labs = models.ManyToManyField(Lab)
 
 
 
@@ -23,21 +26,7 @@ class Course(models.Model):
         :param course_number:int
         :param instructor:user
         """
-
-        # Should we check for other
-        cls.course_name = course_name
-        cls.department = department
-        if course_number.isdigit:
-            cls.course_number = course_number
-        else:
-            raise ValueError('Course number was not a number')
-        cls.instructor = instructor
-
-        cls.TAs = {}   # Dictionary of TAs where key = username, value = TA object
-
-        cls.labs = {}  # Dictionary of Labs where key = lab number, value = TA object
-
-    # createCourse equivalent to constructor? calling createCourse on a course object doesnt make sense
+        return cls(courseName =course_name, department=department, courseNumber=course_number, instructor=instructor)
 
     def assign_instructor(self, instructor):
         """assign an instructor to a course
@@ -50,6 +39,7 @@ class Course(models.Model):
         """
 
         self.instructor = instructor
+        self.save()
 
     def remove_instructor(self):
         """remove assigned instructor from course
@@ -69,7 +59,7 @@ class Course(models.Model):
             self.instructor = None
             return True
 
-    def assign_TA(self, ta, grader_status=None, number_of_labs=None):
+    def assign_TA(self, ta):
         """assign TA user to this course with optionally specified grader status and number of labs
 
         :param ta:User
@@ -77,17 +67,8 @@ class Course(models.Model):
         :param number_of_labs:
         :return:"""
 
-        if self.TAs.get(ta.username):
-            raise AssertionError("This TA already exists")
-
-        if (number_of_labs is not None) and (not isinstance(number_of_labs, int) or number_of_labs < 0):
-            raise ValueError('Number of labs is invalid')
-
-        # create TA object with optionally specified grader status and number of labs
-        ta_to_add = TA(ta, grader_status, number_of_labs)
-
-        # add TA to self.TAs with username as key, and TA object as value
-        self.TAs.update({ta.username: ta_to_add})
+        self.TAs.add(ta)
+        self.save()
 
     def remove_TA(self, ta):
         """ remove TA from course

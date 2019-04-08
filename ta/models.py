@@ -11,7 +11,7 @@ class TA(models.Model):
     account = models.ForeignKey(Users, on_delete=models.DO_NOTHING)
 
     @classmethod
-    def create(cls, ta, grader_status=None, number_of_labs=None):
+    def create(cls, account, grader_status=None, number_of_labs=None):
         """Create a TA object, optionally specifying grader status and number of labs
         requires supervisor permissions
         :param ta:User
@@ -19,22 +19,7 @@ class TA(models.Model):
         :param number_of_labs:Int
         """
 
-        # TODO: Check that user is valid by querying database (don't know how to do yet)
-        cls.ta = ta
-
-        # Only populate grader_status if it's a boolean
-        if isinstance(grader_status, bool):
-            cls.grader_status = grader_status
-        else:
-            # TODO: Ask if we need to do more than print a statement when input is bad
-            # Should we fail and terminate so they have to re-do everything?
-            raise ValueError('Grader status was not a boolean')
-
-        # Only populate number_of_labs if it's an int
-        if isinstance(number_of_labs, int):
-            cls.number_of_labs = number_of_labs
-        else:
-            raise ValueError('Number of labs was not an int')
+        return cls(account=account, graderStatus=grader_status, numberOfLabs=number_of_labs)
 
     def set_ta_status(self, grader_status, number_of_labs):
         """Set a TA's grader status and number of labs

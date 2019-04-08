@@ -5,6 +5,9 @@ from django.db import models
 # Create your models here.
 from django.template.context_processors import request
 
+from contactinfo.models import ContactInfo
+from course.models import Course
+from ta.models import TA
 from users.models import Users
 
 
@@ -16,6 +19,10 @@ class YourClass:
   # login
 
   def command(self, s, request):
+    try:
+      currentUser = self.getActiveUser(request)
+    except:
+      pass
     tokens = s.split()
     cmd = tokens[0]
     args = tokens[1:]
@@ -34,7 +41,8 @@ class YourClass:
       except:
         return "Login failed, no such user"
     elif cmd == 'logout':
-      return logout(request)
+      logout(request)
+      return "Logged out"
     elif cmd == "createCourse":
       if len(args) < 3:
         return "Insufficient arguments for command " + cmd
@@ -42,8 +50,8 @@ class YourClass:
       department = args[1]
       coursenumber = args[2]
       permission = True  # todo : check permissions of active user
-      # todo : call create course
-      return
+      Course.create(coursename, department, coursenumber).save()
+      return "Course created"
     elif cmd == "createAccount":
       if len(args) < 3:
         return "Insufficient arguments for command " + cmd
@@ -77,14 +85,32 @@ class YourClass:
       user[0].delete()
       return "User deleted"
     elif cmd == "editContactInfo":
-      # todo
-      return
+      if len(args) < 6:
+        return "Missing arguments"
+      try:
+        u = self.getActiveUser(request)
+        if len(ContactInfo.objects.filter(account=u)) == 0:
+          ContactInfo.create(u.username, args[0], args[1], args[2], args[3], args[4], args[5]).save()
+          return "Success"
+        u.editContactInfo(u, args[0], args[1], args[2], args[3], args[4], args[5])
+        return "Success"
+      except:
+        return "Login a user first"
     # todo : support other commands
     elif cmd == "assignInstructor":
-      return
+      course = Course.objects.get(courseName=args[0])
+      user = Users.objects.get(username=args[1])
+      course.assign_instructor(user)
+      return "Success"
     elif cmd == "removeInstructor":
       return
     elif cmd == "assignTACourse":
+      course = Course.objects.get(courseName=args[0])
+      user = Users.objects.get(username=args[1])
+      ta = TA.create(user,True, 1)
+      ta.save()
+      course.assign_TA(ta)
+      return "Success"
       return
     elif cmd == "removeTACourse":
       return

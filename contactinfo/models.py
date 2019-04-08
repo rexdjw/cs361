@@ -2,6 +2,7 @@ from django.db import models
 
 # Create your models here.
 
+
 class ContactInfo(models.Model):
     name = models.CharField(max_length=64)
     phoneNumber = models.CharField(max_length=16)
@@ -9,11 +10,11 @@ class ContactInfo(models.Model):
     address = models.CharField(max_length=256)
     officeHours = models.CharField(max_length=32)
     officeNumber = models.CharField(max_length=32)
-    account = models.ForeignKey('users.Users', on_delete=models.DO_NOTHING)
+    account = models.OneToOneField('users.Users', on_delete=models.DO_NOTHING)
 
 
     @classmethod
-    def create(cls, account, name, phone_number, email, address, office_hours=None, office_number=None):
+    def create(cls, account, name, phone_number, email, address, officeHours=None, officeNumber=None):
         """Create a ContactInfo object with optionally specified office hours, and office number
 
         Requires permissions of supervisor or of the user associated with this contact information
@@ -27,29 +28,10 @@ class ContactInfo(models.Model):
         :return:None
         """
 
-        return cls(account=account, name=name, phone_number=phone_number, email=email, address=address, office_hours=office_hours, office_number=office_number)
+        from users.models import Users
+        account = Users.objects.get(username=account)
+        return cls(account=account, name=name, phoneNumber=phone_number, email=email, address=address, officeHours=officeHours, officeNumber=officeNumber)
 
-    def editContactInfo(self, name=None, phone_number=None, email=None, address=None, office_hours=None,
-                        office_number=None):
-        """Edit contact information specifying desired fields
-
-        Requires permissions of supervisor or of the user associated with this contact information
-
-        :param name:string
-        :param phone_number:string
-        :param email:string
-        :param address:string
-        :param office_hours:string
-        :param office_number:string
-        :return:None
-        """
-        self.name = name
-        self.phone_number = phone_number
-        self.email = email
-        self.address = address
-        self.office_hours = office_hours
-        self.office_number = office_number
-        self.save()
 
     def get_public(self):
         """Return public contact information which includes - name, email, office hours, office number
@@ -58,7 +40,7 @@ class ContactInfo(models.Model):
 
         :return:List[string]
         """
-        return [self.name, self.email, self.office_hours, self.office_number]
+        return [self.name, self.email, self.officeHours, self.officeNumber]
 
     def get_private(self):
         """Return private contact information which includes all fields
@@ -67,12 +49,13 @@ class ContactInfo(models.Model):
 
         :return:List[String]
         """
-        return [self.name, self.phone_number, self.email, self.address, self.office_hours, self.office_number]
+        return [self.name, self.phone_number, self.email, self.address, self.officeHours, self.officeNumber]
+
 
     def __str__(self):
         """Return this contact information object as a string, which includes publicly available contact information
 
         :return:
         """
-        return self.get_public()
+        return str(self.get_public())
 

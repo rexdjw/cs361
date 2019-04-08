@@ -29,24 +29,24 @@ class TestApp(TestCase):
 
     def test_createAccountSuccess(self):
         # Supervisor logged in, creating account with any role
-        result = self.app.command("createAccount Usersname password ta")
-        self.assertEquals(result, "Account Usersname created successfully.")
+        result = self.app.command("createAccount username password 8")
+        self.assertEquals(result, "Account username created successfully.")
 
         # Administrator logged in, creating account of Instructor or TA
-        result = self.app.command("createAccount Usersname password ta")
-        self.assertEquals(result, "Account Usersname created successfully.")
+        result = self.app.command("createAccount username password 2")
+        self.assertEquals(result, "Account username created successfully.")
 
     def test_createAccountFail(self):
         # Eligible Users creating duplicate Users
-        result = self.app.command("createAccount Usersname password ta")
-        self.assertEquals(result, "Account Usersname already exists!")
+        result = self.app.command("createAccount username password 1")
+        self.assertEquals(result, "Account username already exists!")
 
         # Administrator logged in, creating account of Administrator
-        result = self.app.command("createAccount Usersname password administrator")
+        result = self.app.command("createAccount username password 8")
         self.assertEquals(result, "Permission denied - Cannot create account with that role!")
 
         # Ineglible Users logged in, creating account of any role
-        result = self.app.command("createAccount Usersname password ta")
+        result = self.app.command("createAccount username password 1")
         self.assertEquals(result, "Permission denied - Your role may not create accounts!")
 
     def test_deleteAccountSuccess(self):

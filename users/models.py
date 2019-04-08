@@ -93,6 +93,20 @@ class Users(AbstractUser):
         """query whether this user object has ta permission"""
         return (self.roles & 1) == 1
 
+    def is_above(self, role):
+        """query whether this user has a strictly higher role than the argument
+        :param role:int - the int value of the role to check against
+        """
+        if role >= 8:
+            return False
+        if role >= 4:
+            return self.is_super()
+        if role >= 2:
+            return self.is_admin()
+        if role == 1:
+            return self.is_instructor()
+        return self.is_ta()
+
     def reset_username(self, new_username):
         """change the username of this user object
         :param new_username:string
@@ -130,14 +144,17 @@ class Users(AbstractUser):
 
         :return:
         """
-        if self.is_super():
-            return "username: " + self.username + " - supervisor"
-        if self.is_admin():
-            return "username: " + self.username + " - administrator"
-        if self.is_instructor():
-            return "username: " + self.username + " - instructor"
-        if self.is_ta():
-            return "username: " + self.username + " - TA"
+        roles = "User " + self.username + " has "
+        if self.roles > 0:
+            if self.is_super():
+                roles + "[Supervisor] "
+            if self.is_admin():
+                roles + "[Administrator] "
+            if self.is_instructor():
+                roles + "[Instructor] "
+            if self.is_ta():
+                roles + "[TA] "
         else:
-            return "username: " + self.username + " has no assigned roles!"
+            roles += "no "
+        return roles + "role permissions."
 

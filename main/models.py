@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.hashers import check_password
 from django.db import models
 
@@ -33,6 +33,8 @@ class YourClass:
           return "Login failed, wrong password"
       except:
         return "Login failed, no such user"
+    elif cmd == 'logout':
+      return logout(request)
     elif cmd == "createCourse":
       if len(args) < 3:
         return "Insufficient arguments for command " + cmd
@@ -48,7 +50,10 @@ class YourClass:
       username = args[0]
       password = args[1]
       role = int(args[2])
-      permission = True  # todo : check active user is_admin
+      try:
+        permission = self.getActiveUser(request).is_admin
+      except:
+        return "Failed"
       greater = True  # todo : check that active user is_above(role)
       exists = False  # todo : query the database to find out if the active user exists
       if permission:
@@ -66,9 +71,11 @@ class YourClass:
         return "Insufficient arguments for command " + cmd
       username = args[0]
       permission = True  # todo : check permissions of active user
-      exists = True  # todo : query the database to find out if the active user exists
-      # todo : call delete account
-      return
+      user = Users.objects.filter(username=username)
+      if len(user) == 0:
+        return "No such user"
+      user[0].delete()
+      return "User deleted"
     elif cmd == "editContactInfo":
       # todo
       return
@@ -98,6 +105,6 @@ class YourClass:
 
   def getActiveUser(self, request):
     if request.user.is_authenticated:
-      return request.user.first_name
+      return request.user
     else:
       return "no one logged in"

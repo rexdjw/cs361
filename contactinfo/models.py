@@ -13,7 +13,7 @@ class ContactInfo(models.Model):
 
 
     @classmethod
-    def create(cls, name, phone_number, email, address, office_hours=None, office_number=None):
+    def create(cls, account, name, phone_number, email, address, office_hours=None, office_number=None):
         """Create a ContactInfo object with optionally specified office hours, and office number
 
         Requires permissions of supervisor or of the user associated with this contact information
@@ -27,12 +27,7 @@ class ContactInfo(models.Model):
         :return:None
         """
 
-        cls.name = name
-        cls.phone_number = phone_number
-        cls.email = email
-        cls.address = address
-        cls.office_hours = office_hours
-        cls.office_number = office_number
+        return cls(account=account, name=name, phone_number=phone_number, email=email, address=address, office_hours=office_hours, office_number=office_number)
 
     def editContactInfo(self, name=None, phone_number=None, email=None, address=None, office_hours=None,
                         office_number=None):

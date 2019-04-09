@@ -1,10 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from contactinfo.models import ContactInfo
 
 # Create your models here.
-
-
-from contactinfo.models import ContactInfo
 
 
 class UserGroup(models.Model):
@@ -38,7 +36,6 @@ class Users(AbstractUser):
         """
         return cls(username=username, password=password, roles=roles, contact_info=contact_info)
 
-
     @staticmethod
     def display_users(role=None):
         """display all users in the database, or all users of the specified role if provided
@@ -49,56 +46,9 @@ class Users(AbstractUser):
         # todo: if role is not None, return all users with specified role
         pass
 
-    def create_account(self, username, password, roles):
-        """create a new user object and add it to the database
-        :param username:string
-        :param password:string
-        :param roles:int in range 0-15
-        """
-        self.username = username
-        self.password = password
-        self.roles = roles
-        self.save()
-
-    def delete_account(self):
-        """remove this user object from the db and voids all fields"""
-        self.username = None
-        self.password = None
-        self.roles = None
-        self.contact_info = None
-        # todo: query db for this username - if it exists, remove it
-
     def display_assignments(self, role):
         # todo: if instructor, display assigned courses
         # todo: if ta, display assigned courses and labs
-        pass
-
-    def editContactInfo(self, account, name, phone_number, email, address, office_hours,
-                        office_number):
-        """Edit contact information specifying desired fields
-
-        Requires permissions of supervisor or of the user associated with this contact information
-
-        :param name:string
-        :param phone_number:string
-        :param email:string
-        :param address:string
-        :param office_hours:string
-        :param office_number:string
-        :return:None
-        """
-
-        ci = ContactInfo.objects.filter(account=account)[0]
-        ci.name = name
-        ci.phoneNumber = phone_number
-        ci.email = email
-        ci.address = address
-        ci.officeHours = office_hours
-        ci.officeNumber = office_number
-        ci.save()
-
-    def dispose(self):
-        # todo: what is this?
         pass
 
     def is_super(self):
@@ -107,7 +57,9 @@ class Users(AbstractUser):
 
     def is_admin(self):
         """query whether this user object has administrator permission"""
-        return (self.roles & 4) == 4
+        # supervisor by default has administrator permission - instructor and ta have unique permissions so must be
+        # separate, but there is no such distinction between super and admin
+        return (self.roles & 4) == 4 or self.is_super()
 
     def is_instructor(self):
         """query whether this user object has instructor permission"""
@@ -149,18 +101,32 @@ class Users(AbstractUser):
         """
         self.roles = new_roles
 
-    def set_contact_info(self, name, phone_numer, email, address, office_hours=None, office_number=None):
+    def set_contact_info(self, name, phone_number, email, address, office_hours="<not specified>",
+                         office_number="<not specified>"):
         """set the contact information of a user optionally specifying office hours and office number
 
         :param name:string
-        :param phone_numer:string
+        :param phone_number:string
         :param email:string
         :param address:string
         :param office_hours:string
         :param office_number:string
         :return:
         """
-        self.contact_info = ContactInfo(name, phone_numer, email, address, office_hours, office_number)
+        if not self.contact_info:
+            ci = ContactInfo.create(self.username, name, phone_number, email, address, office_hours,
+                                    office_number).save()
+            self.contact_info = ci
+        else:
+            ci = self.contact_info
+            ci.name = name
+            ci.phoneNumber = phone_number
+            ci.email = email
+            ci.address = address
+            if office_hours != "<not specified>":
+                ci.officeHours = office_hours
+            if office_number != "<not specified>":
+                ci.officeNumber = office_number
         self.save()
 
     def __str__(self):

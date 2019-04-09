@@ -9,9 +9,9 @@ class Course(models.Model):
     courseName = models.CharField(max_length=64)
     department = models.CharField(max_length=64)
     courseNumber = models.IntegerField()
-    TAs =  models.ManyToManyField(TA)
     instructor = models.ForeignKey('users.Users', null=True, on_delete=models.DO_NOTHING)
     labs = models.ManyToManyField(Lab)
+    TAs = models.ManyToManyField(TA)
 
 
 
@@ -27,37 +27,6 @@ class Course(models.Model):
         :param instructor:user
         """
         return cls(courseName =course_name, department=department, courseNumber=course_number, instructor=instructor)
-
-    def assign_instructor(self, instructor):
-        """assign an instructor to a course
-
-        requires Supervisor permission
-
-        :param instructor:User
-
-        :return: None
-        """
-
-        self.instructor = instructor
-        self.save()
-
-    def remove_instructor(self):
-        """remove assigned instructor from course
-
-        requires Supervisor permissions
-
-        :return: Boolean
-        """
-
-        # if there is no instructor return false
-
-        if self.instructor is None:
-            return False
-
-        # else set instructor to None and return true
-        else:
-            self.instructor = None
-            return True
 
     def assign_TA(self, ta):
         """assign TA user to this course with optionally specified grader status and number of labs
@@ -89,6 +58,39 @@ class Course(models.Model):
         # else return false
         else:
             return False
+
+
+
+    def assign_instructor(self, instructor):
+        """assign an instructor to a course
+
+        requires Supervisor permission
+
+        :param instructor:User
+
+        :return: None
+        """
+
+        self.instructor = instructor
+        self.save()
+
+    def remove_instructor(self):
+        """remove assigned instructor from course
+
+        requires Supervisor permissions
+
+        :return: Boolean
+        """
+
+        # if there is no instructor return false
+
+        if self.instructor is None:
+            return False
+
+        # else set instructor to None and return true
+        else:
+            self.instructor = None
+            return True
 
     def display_assignment(self):
         """Display instructor and TA's assigned to this course

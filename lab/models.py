@@ -1,11 +1,15 @@
 from django.db import models
 
 # Create your models here.
+from ta.models import TA
+
+
 class Lab(models.Model):
     labNumber = models.IntegerField()
+    TAs = models.ManyToManyField(TA)
 
     @classmethod
-    def create(cls, lab_number, ta = None):
+    def create(cls, lab_number):
         """create lab object with optionally assigned ta
 
         requires supervisor permissions
@@ -16,38 +20,38 @@ class Lab(models.Model):
 
         # check permissions - TODO
 
-        cls.lab_number = lab_number
-        cls.ta = ta
+        return cls(labNumber=lab_number)
 
+    def assign_TA(self, ta):
+        """assign TA user to this course with optionally specified grader status and number of labs
 
-    def assign_ta(self, ta):
-        """assign TA to this lab section
+        :param ta:User
+        :param grader_status:
+        :param number_of_labs:
+        :return:"""
 
-        requires permissions of instructor assigned to this course or supervisor
+        self.TAs.add(ta)
+        self.save()
 
-        :param ta:TA
-        :return:None
-        """
-        # check permissions - TODO
+    def remove_TA(self, ta):
+        """ remove TA from course
 
-        self.ta = ta
+        requires Supervisor permissions
+        :param ta:User
+        :return:None"""
 
-    def remove_ta(self):
-        """remove TA from this lab section
+        # use username of ta to remove as key
+        username_to_remove = ta.username
 
-        if no TA is assigned to this section return false, else remove and return true
-
-        requires permissions of instructor assigned to this course or supervisor
-
-        :return:Boolean
-        """
-        # check permissions - TODO
-
-        if self.ta is None:
-            return False
-        else:
-            self.ta = None
+        # search TAs dictionary for this course by username of ta to remove as key
+        # remove TA if present and return true
+        if username_to_remove in self.TAs:
+            del self.TAs[username_to_remove]
             return True
+
+        # else return false
+        else:
+            return False
 
     def __str__(self):
         return self.labNumber

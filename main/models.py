@@ -7,6 +7,7 @@ from django.template.context_processors import request
 
 from contactinfo.models import ContactInfo
 from course.models import Course
+from lab.models import Lab
 from ta.models import TA
 from users.models import Users
 
@@ -105,17 +106,16 @@ class YourClass:
     elif cmd == "removeInstructor":
       return
     elif cmd == "assignTACourse":
-      course = Course.objects.get(courseName=args[0])
-      user = Users.objects.get(username=args[1])
-      ta = TA.create(user,True, 1)
-      ta.save()
-      course.assign_TA(ta)
-      return "Successfully added TA to course"
       return
     elif cmd == "removeTACourse":
       return
     elif cmd == "assignTALab":
-      return
+      lab = Lab.objects.get(labNumber=args[0])
+      user = Users.objects.get(username=args[1])
+      ta = TA.create(user, True, 1)
+      ta.save()
+      lab.assign_TA(ta)
+      return "Successfully added TA to lab"
     elif cmd == "removeTALab":
       return
     elif cmd == "courseAssignments":

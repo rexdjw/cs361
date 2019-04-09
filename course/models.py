@@ -2,14 +2,13 @@ from django.db import models
 
 # Create your models here.
 from lab.models import Lab
-from ta.models import TA
+
 
 
 class Course(models.Model):
     courseName = models.CharField(max_length=64)
     department = models.CharField(max_length=64)
     courseNumber = models.IntegerField()
-    TAs =  models.ManyToManyField(TA)
     instructor = models.ForeignKey('users.Users', null=True, on_delete=models.DO_NOTHING)
     labs = models.ManyToManyField(Lab)
 
@@ -58,37 +57,6 @@ class Course(models.Model):
         else:
             self.instructor = None
             return True
-
-    def assign_TA(self, ta):
-        """assign TA user to this course with optionally specified grader status and number of labs
-
-        :param ta:User
-        :param grader_status:
-        :param number_of_labs:
-        :return:"""
-
-        self.TAs.add(ta)
-        self.save()
-
-    def remove_TA(self, ta):
-        """ remove TA from course
-
-        requires Supervisor permissions
-        :param ta:User
-        :return:None"""
-
-        # use username of ta to remove as key
-        username_to_remove = ta.username
-
-        # search TAs dictionary for this course by username of ta to remove as key
-        # remove TA if present and return true
-        if username_to_remove in self.TAs:
-            del self.TAs[username_to_remove]
-            return True
-
-        # else return false
-        else:
-            return False
 
     def display_assignment(self):
         """Display instructor and TA's assigned to this course

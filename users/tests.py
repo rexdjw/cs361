@@ -40,8 +40,7 @@ class TestUser(TestCase):
 
     def test_is_admin1(self):
 
-        # cap at 7 since if randomly super, test will fail incorrectly
-        Users.create("Sean", "1234", randint(0, 7) & 11).save()
+        Users.create("Sean", "1234", randint(0, 15) & 11).save()
         self.user = Users.objects.get(username="Sean")
         self.assertFalse(self.user.is_admin())
 
@@ -146,3 +145,21 @@ class TestUser(TestCase):
         self.assertEqual(self.user.contactinfo.email, email)
         self.assertEqual(self.user.contactinfo.address, address)
 
+    def test_to_string0(self):
+
+        Users.create("username", "password", 0).save()
+        self.user = Users.objects.get(username="username")
+
+        self.assertEqual(str(self.user), "User username has no role permissions.")
+
+    def test_to_string1(self):
+        Users.create("username", "password", 1).save()
+        self.user = Users.objects.get(username="username")
+
+        self.assertEqual(str(self.user), "User username has [TA] role permissions.")
+
+    def test_to_string1(self):
+        Users.create("username", "password", 10).save()
+        self.user = Users.objects.get(username="username")
+
+        self.assertEqual(str(self.user), "User username has [Supervisor] [Instructor] role permissions.")

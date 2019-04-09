@@ -106,7 +106,12 @@ class YourClass:
     elif cmd == "removeInstructor":
       return
     elif cmd == "assignTACourse":
-      return
+      course = Course.objects.get(courseName=args[0])
+      user = Users.objects.get(username=args[1])
+      ta = TA.create(user, True, 1)
+      ta.save()
+      course.assign_TA(ta)
+      return "Successfully added TA to course"
     elif cmd == "removeTACourse":
       return
     elif cmd == "assignTALab":

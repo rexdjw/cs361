@@ -57,9 +57,7 @@ class Users(AbstractUser):
 
     def is_admin(self):
         """query whether this user object has administrator permission"""
-        # supervisor by default has administrator permission - instructor and ta have unique permissions so must be
-        # separate, but there is no such distinction between super and admin
-        return (self.roles & 4) == 4 or self.is_super()
+        return (self.roles & 4) == 4
 
     def is_instructor(self):
         """query whether this user object has instructor permission"""
@@ -137,13 +135,13 @@ class Users(AbstractUser):
         roles = "User " + self.username + " has "
         if self.roles > 0:
             if self.is_super():
-                roles + "[Supervisor] "
+                roles += "[Supervisor] "
             if self.is_admin():
-                roles + "[Administrator] "
+                roles += "[Administrator] "
             if self.is_instructor():
-                roles + "[Instructor] "
+                roles += "[Instructor] "
             if self.is_ta():
-                roles + "[TA] "
+                roles += "[TA] "
         else:
             roles += "no "
         return roles + "role permissions."

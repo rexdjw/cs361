@@ -17,14 +17,6 @@ class TestLab(TestCase):
 
     def test_assign_TA(self):
         lab = Lab.objects.create(labNumber=401)
-        #self.assertEqual(lab.ta, None)
+        lab.assign_TA(self.ta)
+        self.assertEqual(lab.TAs.get(account=self.users), self.ta)
 
-        #lab.assign_ta(self.ta)
-        #self.assertEqual(lab.ta, self.ta)
-
-    def test_remove_TA(self):
-        lab = Lab(lab_number=401, ta=self.ta)
-        #self.assertEqual(lab.ta, self.ta)
-
-        #lab.remove_ta()
-        #self.assertEqual(lab.ta, None)

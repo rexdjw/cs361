@@ -3,6 +3,7 @@ from django.test import TestCase
 from course.models import Course
 from users.models import Users
 from ta.models import TA
+from lab.models import Lab
 
 
 class TestCourse(TestCase):
@@ -54,3 +55,17 @@ class TestCourse(TestCase):
         ta = TA.objects.create(account=self.users, graderStatus=False, numberOfLabs=1)
         self.course.assign_TA(ta=ta)
         self.assertEqual(self.course.TAs.get(account=self.users), ta)
+
+    def test_remove_TA(self):
+        ta = TA.objects.create(account=self.users, graderStatus=False, numberOfLabs=1)
+        self.course.assign_TA(ta=ta)
+        #self.assertTrue(self.course.remove_TA(ta))
+        #self.assertIsNone(self.course.TAs)
+
+    def test_create_lab_section(self):
+        x = 801
+        ta = TA.objects.create(account=self.users, graderStatus=False, numberOfLabs=1)
+
+        self.course.create_lab_section(x, ta)
+
+        #self.assertEqual(self.course.labs.objects.count(), 1)

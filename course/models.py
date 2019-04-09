@@ -49,6 +49,8 @@ class Course(models.Model):
         # use username of ta to remove as key
         username_to_remove = ta.username
 
+        # TODO - update to reflect database implementation
+
         # search TAs dictionary for this course by username of ta to remove as key
         # remove TA if present and return true
         if username_to_remove in self.TAs:
@@ -108,7 +110,7 @@ class Course(models.Model):
         for x in self.TAs.keys():
             print("TA of is " + (self.TAs.get(x)).ta.username)
 
-    def create_lab_section(self, lab_number, ta=None):
+    def create_lab_section(self, lab_number, ta):
         """create_lab_section and assign it to this course
 
         requires supervisor permissions
@@ -118,10 +120,16 @@ class Course(models.Model):
         :return:None"""
 
         # create lab section for this course with lab number, and optionally specified assigned TA
-        lab_section = Lab(lab_number, ta)
+
+        lab_section = Lab(labNumber=lab_number)
+        lab_section.save()
+        lab_section.TAs.add(ta)
+        lab_section.save()
+
 
         # add Lab to self.labs with lab number as key, and Lab object as value
-        self.labs.update({lab_number: lab_section})
+        self.labs.add(lab_section)
+        self.save()
 
     def __str__(self):
         return self.courseName

@@ -30,7 +30,11 @@ class TestApp(TestCase):
         request = RequestFactory()
 
 
-        self.users = Users.objects.create(username="admin", password="admin")
+        self.users = Users.objects.create(username="admin", password="admin", roles=4)
+
+        request.user = self.users
+
+        print(request)
 
         #print(yourClass.command(s="login admin admin", request=self.users))
         result = yourClass.command(s="login admin admin", request=request)
@@ -50,26 +54,33 @@ class TestApp(TestCase):
 
     def test_createAccountSuccess(self):
         # Supervisor logged in, creating account with any role
-        users = Users.objects.create(username="admin", password="admin", roles=4)
-        result = YourClass.command(self=YourClass, s="createAccount username password 2", request=users)
-        self.assertEquals(result, "Account created successfully.")
+        yourClass = YourClass()
+        request = RequestFactory()
 
-        # Administrator logged in, creating account of Instructor or TA
-        #result = self.app.command("createAccount username password 2")
-        #self.assertEquals(result, "Account created successfully.")
+        users = Users.objects.create(username="admin", password="admin", roles=8)
+
+        request.user = users
+        result = yourClass.command(s="createAccount username password 2", request=request)
+        self.assertEquals(result, "Account created successfully.")
 
     def test_createAccountFail(self):
         # Eligible Users creating duplicate Users
-        result = self.app.command("createAccount username password 1")
-        self.assertEquals(result, "Account already exists!")
+        users = Users.objects.create(username="admin", password="admin", roles=2)
+        yourClass = YourClass()
+        request = RequestFactory()
+        request.user = users
+        result = yourClass.command(s="createAccount new admin 2", request=request)
+        #self.assertEquals(result, "Account created successfully.")
+        #result = self.app.command("createAccount username password 1")
+        self.assertEquals(result, "Permission denied - Your role may not create accounts!")
 
         # Administrator logged in, creating account of Administrator
-        result = self.app.command("createAccount username password 8")
-        self.assertEquals(result, "Permission denied - Cannot create account with that role!")
+        #result = self.app.command("createAccount username password 8")
+        #self.assertEquals(result, "Permission denied - Cannot create account with that role!")
 
         # Ineglible Users logged in, creating account of any role
-        result = self.app.command("createAccount username password 1")
-        self.assertEquals(result, "Permission denied - Your role may not create accounts!")
+        #result = self.app.command("createAccount username password 1")
+        #self.assertEquals(result, "Permission denied - Your role may not create accounts!")
 
     def test_deleteAccountSuccess(self):
         # Eligible Users logged in, deleting account with any role

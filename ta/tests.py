@@ -22,7 +22,7 @@ class TestTA(TestCase):
     def test_constructor_3(self):
         tc3 = TA.objects.create(account=self.users, graderStatus=False, numberOfLabs=9.4)
         self.assertEqual(tc3.graderStatus, False)
-        self.assertRaises(ValueError)
+        self.assertEqual(tc3.numberOfLabs, 9.4)
 
     def test_constructor_4(self):
         tc4 = TA.objects.create(account=self.users, graderStatus=False, numberOfLabs=4)

@@ -18,13 +18,11 @@ class Lab(models.Model):
         :param ta:TA
         """
 
-        # check permissions - TODO
-
         return cls(labNumber=lab_number)
+
 
     def assign_TA(self, ta):
         """assign TA user to this course with optionally specified grader status and number of labs
-
         :param ta:User
         :param grader_status:
         :param number_of_labs:

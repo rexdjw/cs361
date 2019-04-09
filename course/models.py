@@ -101,7 +101,7 @@ class Course(models.Model):
         # display how? print out? return?
         # are there permissions associated with this?
 
-        print("Instructor of " + self.course_name + " is " + self.instructor)
+        print("Instructor of " + self.courseName + " is " + self.instructor)
 
         for x in self.TAs.keys():
             print("TA of is " + (self.TAs.get(x)).ta.username)

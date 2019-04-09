@@ -1,5 +1,5 @@
 from unittest import TestCase, TestSuite, TextTestRunner, makeSuite
-from .app import App
+from main.models import YourClass
 from django.test import TestCase
 from .testmodels import *
 

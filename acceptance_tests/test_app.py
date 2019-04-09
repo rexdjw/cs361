@@ -1,7 +1,7 @@
-#from unittest import TestCase, TestSuite, TextTestRunner, makeSuite
-#from acceptance_tests.app import App
+
+from unittest import TestCase, TestSuite, TextTestRunner, makeSuite
+from main.models import YourClass
 from django.test import TestCase
-#from .testmodels import *
 
 from main.models import YourClass
 from users.models import Users

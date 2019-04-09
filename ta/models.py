@@ -14,7 +14,7 @@ class TA(models.Model):
     def create(cls, account, grader_status=None, number_of_labs=None):
         """Create a TA object, optionally specifying grader status and number of labs
         requires supervisor permissions
-        :param ta:User
+        :param account:User
         :param grader_status:Boolean
         :param number_of_labs:Int
         """
@@ -29,13 +29,13 @@ class TA(models.Model):
         """
 
         # Only populate grader_status if it's a boolean (TODO: DEFAULT FALSE???)
-        if grader_status is not None & isinstance(grader_status, bool):
+        if isinstance(grader_status, bool):
             self.grader_status = grader_status
         else:
             raise ValueError('Grader status input is not valid, please enter True or False.')
 
         # Only populate number_of_labs if it's an int
-        if isinstance(number_of_labs, int) & number_of_labs >= 0:
+        if type(number_of_labs) is int and number_of_labs >= 0:
             self.number_of_labs = number_of_labs
         else:
             raise ValueError('Number of labs input is not valid, please enter a positive integer.')

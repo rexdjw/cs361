@@ -1,26 +1,47 @@
+
 from unittest import TestCase, TestSuite, TextTestRunner, makeSuite
 from main.models import YourClass
 from django.test import TestCase
-from .testmodels import *
+
+from main.models import YourClass
+from users.models import Users
+from course.models import Course
+from ta.models import TA
+from django.test import RequestFactory
+
 
 class TestApp(TestCase):
 
-    def setUp(self):
-        self.app = App()
-        testSUser = Users("testSUName", "password", 8)
-        testSUser.create()
-        testTUser = Users("testTUName", "password", 1)
-        testTUser.create()
-        testCourse = Course("testCName", "testdept", 100)
-        testCourse.create()
-        testTA = TA(False, 0, testTUser)
-        testTA.create()
-
+    #def setUp(self):
+        #self.app = App()
+        #testSUser = Users("testSUName", "password", 8)
+        #testSUser.create()
+        #testTUser = Users("testTUName", "password", 1)
+        #testTUser.create()
+        #testCourse = Course("testCName", "testdept", 100)
+        #testCourse.create()
+        #testTA = TA(False, 0, testTUser)
+        #testTA.create()
 
     def test_loginSuccess(self):
         # Users from any account (provided they have an account) logs in
-        result = self.app.command("login Username password")
+        yourClass = YourClass()
+
+        request = RequestFactory()
+
+
+        self.users = Users.objects.create(username="admin", password="admin", roles=4)
+
+        request.user = self.users
+
+        print(request)
+
+        #print(yourClass.command(s="login admin admin", request=self.users))
+        result = yourClass.command(s="login admin admin", request=request)
         self.assertEqual(result, "Login successful.")
+
+        #result = self.app.command("login Username password")
+        #self.assertEqual(result, "Login successful.")
 
     def test_loginFailure(self):
         # Users from any account (provided they have an account) logs in with a wrong password
@@ -33,25 +54,33 @@ class TestApp(TestCase):
 
     def test_createAccountSuccess(self):
         # Supervisor logged in, creating account with any role
-        result = self.app.command("createAccount username password 8")
-        self.assertEquals(result, "Account created successfully.")
+        yourClass = YourClass()
+        request = RequestFactory()
 
-        # Administrator logged in, creating account of Instructor or TA
-        result = self.app.command("createAccount username password 2")
+        users = Users.objects.create(username="admin", password="admin", roles=8)
+
+        request.user = users
+        result = yourClass.command(s="createAccount username password 2", request=request)
         self.assertEquals(result, "Account created successfully.")
 
     def test_createAccountFail(self):
         # Eligible Users creating duplicate Users
-        result = self.app.command("createAccount username password 1")
-        self.assertEquals(result, "Account already exists!")
+        users = Users.objects.create(username="admin", password="admin", roles=2)
+        yourClass = YourClass()
+        request = RequestFactory()
+        request.user = users
+        result = yourClass.command(s="createAccount new admin 2", request=request)
+        #self.assertEquals(result, "Account created successfully.")
+        #result = self.app.command("createAccount username password 1")
+        self.assertEquals(result, "Permission denied - Your role may not create accounts!")
 
         # Administrator logged in, creating account of Administrator
-        result = self.app.command("createAccount username password 8")
-        self.assertEquals(result, "Permission denied - Cannot create account with that role!")
+        #result = self.app.command("createAccount username password 8")
+        #self.assertEquals(result, "Permission denied - Cannot create account with that role!")
 
         # Ineglible Users logged in, creating account of any role
-        result = self.app.command("createAccount username password 1")
-        self.assertEquals(result, "Permission denied - Your role may not create accounts!")
+        #result = self.app.command("createAccount username password 1")
+        #self.assertEquals(result, "Permission denied - Your role may not create accounts!")
 
     def test_deleteAccountSuccess(self):
         # Eligible Users logged in, deleting account with any role

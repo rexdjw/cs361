@@ -1,26 +1,43 @@
-from unittest import TestCase, TestSuite, TextTestRunner, makeSuite
-from .app import App
+#from unittest import TestCase, TestSuite, TextTestRunner, makeSuite
+#from acceptance_tests.app import App
 from django.test import TestCase
-from .testmodels import *
+#from .testmodels import *
+
+from main.models import YourClass
+from users.models import Users
+from course.models import Course
+from ta.models import TA
+from django.test import RequestFactory
+
 
 class TestApp(TestCase):
 
-    def setUp(self):
-        self.app = App()
-        testSUser = Users("testSUName", "password", 8)
-        testSUser.create()
-        testTUser = Users("testTUName", "password", 1)
-        testTUser.create()
-        testCourse = Course("testCName", "testdept", 100)
-        testCourse.create()
-        testTA = TA(False, 0, testTUser)
-        testTA.create()
-
+    #def setUp(self):
+        #self.app = App()
+        #testSUser = Users("testSUName", "password", 8)
+        #testSUser.create()
+        #testTUser = Users("testTUName", "password", 1)
+        #testTUser.create()
+        #testCourse = Course("testCName", "testdept", 100)
+        #testCourse.create()
+        #testTA = TA(False, 0, testTUser)
+        #testTA.create()
 
     def test_loginSuccess(self):
         # Users from any account (provided they have an account) logs in
-        result = self.app.command("login Username password")
+        yourClass = YourClass()
+
+        request = RequestFactory()
+
+
+        self.users = Users.objects.create(username="admin", password="admin")
+
+        #print(yourClass.command(s="login admin admin", request=self.users))
+        result = yourClass.command(s="login admin admin", request=request)
         self.assertEqual(result, "Login successful.")
+
+        #result = self.app.command("login Username password")
+        #self.assertEqual(result, "Login successful.")
 
     def test_loginFailure(self):
         # Users from any account (provided they have an account) logs in with a wrong password
@@ -33,12 +50,13 @@ class TestApp(TestCase):
 
     def test_createAccountSuccess(self):
         # Supervisor logged in, creating account with any role
-        result = self.app.command("createAccount username password 8")
+        users = Users.objects.create(username="admin", password="admin", roles=4)
+        result = YourClass.command(self=YourClass, s="createAccount username password 2", request=users)
         self.assertEquals(result, "Account created successfully.")
 
         # Administrator logged in, creating account of Instructor or TA
-        result = self.app.command("createAccount username password 2")
-        self.assertEquals(result, "Account created successfully.")
+        #result = self.app.command("createAccount username password 2")
+        #self.assertEquals(result, "Account created successfully.")
 
     def test_createAccountFail(self):
         # Eligible Users creating duplicate Users

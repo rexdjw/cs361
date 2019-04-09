@@ -14,7 +14,8 @@ class ContactInfo(models.Model):
 
 
     @classmethod
-    def create(cls, account, name, phone_number, email, address, officeHours=None, officeNumber=None):
+    def create(cls, account, name, phone_number, email, address, officeHours="<not specified>",
+               officeNumber="<not specified>"):
         """Create a ContactInfo object with optionally specified office hours, and office number
 
         Requires permissions of supervisor or of the user associated with this contact information

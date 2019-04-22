@@ -1,13 +1,15 @@
 <!-- templates/home.html -->
 {% extends 'base.html' %}
 
-{% block title %}Home{% endblock %}
+{% block title %}All Users{% endblock %}
 
 {% block content %}
 {% if user.is_authenticated %}
-  Hi {{ user.username }}!
-  <p><a href="{% url 'logout' %}">logout</a></p>
-  <p><a href="../users/allusers.html">show all users</a></p>
+  Viewing all users as {{ user.username }}:
+  <p><a href="../home">home</a></p>
+    {% for u in Users.objects.all %}
+        <li>u.username</li>
+    {% endfor %}
 {% else %}
   <p>You are not logged in</p>
   <a href="{% url 'login' %}">login</a> |

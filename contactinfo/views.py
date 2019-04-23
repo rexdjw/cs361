@@ -15,12 +15,21 @@ class ContactInfoPage(View):
         nameInput = request.POST["your_name"]
         emailInput = request.POST["email"]
         officeHoursInput = request.POST["officeHours"]
+        officeNumberInput = request.POST["officeNumber"]
+        phoneNumberInput = request.POST["phone"]
+        addressInput = request.POST["address"]
         if(nameInput):
             yourInstance.contactinfo.updateName(nameInput)
         if(emailInput):
             yourInstance.contactinfo.updateEmail(emailInput)
         if(officeHoursInput):
             yourInstance.contactinfo.updateOfficeHours(officeHoursInput)
+        if(officeNumberInput):
+            yourInstance.contactinfo.updateOfficeNumber(officeNumberInput)
+        if(phoneNumberInput):
+            yourInstance.contactinfo.updatePhoneNumber(phoneNumberInput)
+        if(addressInput):
+            yourInstance.contactinfo.updateAddress(addressInput)
         return render(request, 'main/contactInfo.html')
 
 

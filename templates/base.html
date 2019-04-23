@@ -11,5 +11,11 @@
 </head>
 <body>
     {% block content %}{% endblock content %}
+    {% block links %}
+        <p><a href="{% url 'logout' %}">logout</a> ||
+  <a href="../users/allusers.html">show all users</a> ||
+  <a href="{%  url 'contactInfo' %}">contact info</a></p>
+  <p><a href="../">command line</a></p>
+    {% endblock links %}
 </body>
 </html>

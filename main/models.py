@@ -46,6 +46,7 @@ class YourClass:
       logout(request)
       return "Logged out"
     elif cmd == "createCourse":
+      return "Failed- Unimplemented"
       if len(args) < 3:
         return "Insufficient arguments for command " + cmd
       coursename = args[0]
@@ -61,13 +62,13 @@ class YourClass:
       password = args[1]
       role = int(args[2])
       try:
-        permission = self.getActiveUser(request).is_admin
+        permission = self.getActiveUser(request).is_at_least(4)
       except:
         return "Permission denied - Your role may not create accounts!"
-      greater = self.getActiveUser(request).is_above(role)
+      greater = self.getActiveUser(request).is_at_least(role)
       if permission:
         if not greater:
-          return "Permission denied - Your role may not create accounts!"
+          return "Permission denied - Your role may not create accounts of this type!"
         else:
           try:
             user = Users.create(username, password, role)
@@ -82,10 +83,12 @@ class YourClass:
       if len(args) < 1:
         return "Insufficient arguments for command " + cmd
       username = args[0]
-      permission = True  # todo : check permissions of active user
+      permission = self.getActiveUser(request).is_at_least(4)
       user = Users.objects.filter(username=username)
       if len(user) == 0:
         return "No such user"
+      if not self.getActiveUser(request).is_at_least(user[0].roles):
+        return "Permission denied - Your role may not delete accounts of this type!"
       user[0].delete()
       return "User deleted"
     elif cmd == "editContactInfo":
@@ -102,13 +105,15 @@ class YourClass:
         return "Login a user first"
     # todo : support other commands
     elif cmd == "assignInstructor":
+      return "Failed- Unimplemented"
       course = Course.objects.get(courseName=args[0])
       user = Users.objects.get(username=args[1])
       course.assign_instructor(user)
       return "Successfully added instructor to course"
     elif cmd == "removeInstructor":
-      return
+      return "Failed- Unimplemented"
     elif cmd == "assignTACourse":
+      return "Failed- Unimplemented"
       course = Course.objects.get(courseName=args[0])
       user = Users.objects.get(username=args[1])
       ta = TA.create(user, True, 1)
@@ -116,8 +121,10 @@ class YourClass:
       course.assign_TA(ta)
       return "Successfully added TA to course"
     elif cmd == "removeTACourse":
+      return "Failed- Unimplemented"
       return
     elif cmd == "assignTALab":
+      return "Failed- Unimplemented"
       lab = Lab.objects.get(labNumber=args[0])
       user = Users.objects.get(username=args[1])
       ta = TA.create(user, True, 1)
@@ -125,12 +132,16 @@ class YourClass:
       lab.assign_TA(ta)
       return "Successfully added TA to lab"
     elif cmd == "removeTALab":
+      return "Failed- Unimplemented"
       return
     elif cmd == "courseAssignments":
+      return "Failed- Unimplemented"
       return
     elif cmd == "readTAAssignment":
+      return "Failed- Unimplemented"
       return
     elif cmd == "readAllTAAssignment":
+      return "Failed- Unimplemented"
       return
     elif cmd == "readPublicContactInfo":
       return

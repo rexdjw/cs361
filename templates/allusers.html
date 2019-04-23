@@ -7,7 +7,7 @@
 {% if user.is_authenticated %}
   Viewing all users as {{ user.username }}:<br>
     {% for u in all %}
-        <a href='{{ u.get_absolute_url }}'>{{u}}</a><br>
+        <a href='{{ u.get_absolute_url }}'>{{u.username}}</a><br>
     {% endfor %}
     <p><a href="../home">home</a></p>
 {% else %}

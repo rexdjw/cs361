@@ -16,7 +16,10 @@ class Home(View):
     return render(request, 'main/index.html',{"message":response})
 
 class AllUsers(View):
-  all = Users.objects.all()
+  users = Users.objects.all()
+  def getKey(user):
+    return user.roles
+  all = sorted(users, key=getKey)
   def get(self, request):
     return render(request, 'allusers.html', {"all" : self.all})
   def post(self, request):

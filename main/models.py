@@ -34,12 +34,13 @@ class YourClass:
       password = args[1]
       try:
         user = Users.objects.get(username=username)
-        if check_password(password, user.password):
+        if user.check_password(password):
           login(request, user)
           return "Login successful."
         else:
           return "Login failed, wrong password"
-      except:
+      except Exception as e:
+        print(e)
         return "Login failed, no such user"
     elif cmd == 'logout':
       logout(request)
@@ -63,15 +64,17 @@ class YourClass:
         permission = self.getActiveUser(request).is_admin
       except:
         return "Permission denied - Your role may not create accounts!"
-      greater = True  # todo : check that active user is_above(role)
-      exists = False  # todo : query the database to find out if the active user exists
+      greater = self.getActiveUser(request).is_above(role)
       if permission:
-        if exists:
-          return "Account already exists!"
-        elif not greater:
+        if not greater:
           return "Permission denied - Your role may not create accounts!"
         else:
-          Users.create(username, password, role).save()
+          try:
+            user = Users.create(username, password, role)
+            user.set_password(password) #hashing fix
+            user.save()
+          except:
+            return "Account already exists!"
           return "Account created successfully."
       else:
         return "Permission denied - Your role may not create accounts!"

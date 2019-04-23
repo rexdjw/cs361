@@ -133,6 +133,9 @@ class Users(AbstractUser):
                 ci.officeNumber = office_number
         self.save()
 
+    def get_absolute_url(self):
+        return f"/contactInfo/{self.username}/"
+
     def __str__(self):
         """return this user as a string of format "username, role"
 

@@ -5,11 +5,11 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-  Viewing all users as {{ user.username }}:
-  <p><a href="../home">home</a></p>
+  Viewing all users as {{ user.username }}:<br>
     {% for u in all %}
-        <ul>{{ u }}</ul>
+        <a href='{{ u.get_absolute_url }}'>{{u}}</a><br>
     {% endfor %}
+    <p><a href="../home">home</a></p>
 {% else %}
   <p>You are not logged in</p>
   <a href="{% url 'login' %}">login</a> |

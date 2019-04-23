@@ -371,5 +371,5 @@ class TestApp(TestCase):
     def test_unkCommand(self):
         """unrecognized command"""
         cmd = "skjkdhjfhjskhk"
-        result = self.app.command(cmd)
+        result = self.app.command(cmd, request=self.request)
         self.assertEqual(result, "Unrecognized command: " + cmd)

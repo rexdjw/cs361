@@ -8,9 +8,10 @@
   <p>{{message}}</p>
 {% if user.is_authenticated %}
   Hi {{ user.username }}!
-  <p><a href="{% url 'logout' %}">logout</a></p>
-  <p><a href="../users/allusers.html">show all users</a></p>
-  <p><a href="{%  url 'contactInfo' %}">contact info</a></p>
+  <p><a href="{% url 'logout' %}">logout</a> ||
+  <a href="../users/allusers.html">show all users</a> ||
+  <a href="{%  url 'contactInfo' %}">contact info</a></p>
+  <p><a href="/home">web interface</a></p>
 {% else %}
   <p>You are not logged in</p>
   <a href="{% url 'login' %}">login</a> |

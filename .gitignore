@@ -5,3 +5,4 @@ brayshawDNC.txt
 .idea/
 .venv/
 .DS_Store
+db.sqlite3

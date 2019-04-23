@@ -13,5 +13,5 @@ urlpatterns = [
   path('users/', include('django.contrib.auth.urls')),
   path('users/allusers.html', views.AllUsers.as_view()),
   path('contactInfo/', contactInfoviews.ContactInfoPage.as_view(), name='contactInfo'),
-  path('contactInfo/<u>/', contactInfoviews.ContactInfoPageLink.as_view(), name='otherContactInfo')
+  path('contactInfo/<u>/', contactInfoviews.OtherContactInfoPage.as_view(), name='otherContactInfo')
 ]

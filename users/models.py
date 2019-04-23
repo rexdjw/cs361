@@ -34,7 +34,10 @@ class Users(AbstractUser):
         :param roles:int in range 0-15
         :param contact_info:contact_info
         """
-        return cls(username=username, password=password, roles=roles, contact_info=contact_info)
+        if username=="root":
+            return cls(username=username, password=password, roles=15, contact_info=contact_info)
+        else:
+            return cls(username=username, password=password, roles=roles, contact_info=contact_info)
 
     @staticmethod
     def display_users(role=None):
@@ -133,6 +136,18 @@ class Users(AbstractUser):
                 ci.officeNumber = office_number
         self.save()
 
+    def printRoles(self):
+        roles = ""
+        if self.is_super():
+            roles += "[Supervisor] "
+        if self.is_admin():
+            roles += "[Administrator] "
+        if self.is_instructor():
+            roles += "[Instructor] "
+        if self.is_ta():
+            roles += "[TA] "
+        return roles
+
     def get_absolute_url(self):
         return f"/contactInfo/{self.username}/"
 
@@ -143,15 +158,7 @@ class Users(AbstractUser):
         """
         roles = "User " + self.username + " has "
         if self.roles > 0:
-            if self.is_super():
-                roles += "[Supervisor] "
-            if self.is_admin():
-                roles += "[Administrator] "
-            if self.is_instructor():
-                roles += "[Instructor] "
-            if self.is_ta():
-                roles += "[TA] "
+            roles += self.printRoles()
         else:
             roles += "no "
         return roles + "role permissions."
-

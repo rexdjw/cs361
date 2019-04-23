@@ -5,9 +5,9 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-  Viewing all users as {{ user.username }}:<br>
+  Viewing all users as {{ user.username }}:<br><br>
     {% for u in all %}
-        <a href='{{ u.get_absolute_url }}'>{{u.username}}</a><br>
+        <a href='{{ u.get_absolute_url }}'>{{u.username}} {{ u.printRoles }}</a><br>
     {% endfor %}
     <p><a href="../home">home</a></p>
 {% else %}

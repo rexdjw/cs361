@@ -107,6 +107,55 @@ class TestUser(TestCase):
         self.assertEqual(self.user.password, "Ilove361")
         self.assertEqual(self.user.roles, 2)
 
+    def test_is_above0(self):
+        Users.create("name", "pass", 0).save()
+        self.user = Users.objects.get(username="name")
+
+        self.assertEqual(self.user.is_above(0), False)
+
+    def test_is_above1(self):
+        Users.create("name", "pass", 1).save()
+        self.user = Users.objects.get(username="name")
+
+        self.assertEqual(self.user.is_above(0), True)
+
+    def test_is_above2(self):
+        Users.create("name", "pass", 4).save()
+        self.user = Users.objects.get(username="name")
+
+        self.assertEqual(self.user.is_above(4), False)
+
+    def test_is_above3(self):
+        Users.create("name", "pass", 4).save()
+        self.user = Users.objects.get(username="name")
+
+        self.assertEqual(self.user.is_above(2), True)
+
+    def test_is_at_least0(self):
+        Users.create("name", "pass", 0).save()
+        self.user = Users.objects.get(username="name")
+
+        self.assertEqual(self.user.is_at_least(1), False)
+
+    def test_is_at_least1(self):
+        Users.create("name", "pass", 1).save()
+        self.user = Users.objects.get(username="name")
+
+        self.assertEqual(self.user.is_at_least(1), True)
+
+    def test_is_at_least2(self):
+        Users.create("name", "pass", 3).save()
+        self.user = Users.objects.get(username="name")
+
+        self.assertEqual(self.user.is_at_least(4), False)
+
+    def test_is_at_least3(self):
+        Users.create("name", "pass", 4).save()
+        self.user = Users.objects.get(username="name")
+
+        self.assertEqual(self.user.is_at_least(4), True)
+
+
     def test_set_contact_info0(self):
 
         Users.create("username", "password", 0).save()

@@ -76,10 +76,16 @@ class Users(AbstractUser):
         if role >= 4:
             return self.is_super()
         if role >= 2:
-            return self.is_admin()
+            return self.is_admin() or self.is_super()
         if role == 1:
-            return self.is_instructor()
-        return self.is_ta()
+            return self.is_instructor() or self.is_admin() or self.is_super()
+        return self.is_ta() or self.is_instructor() or self.is_admin() or self.is_super()
+
+    def is_at_least(self, role):
+        """query whether this user has a role at least as high as the argument
+        :param role:int - the int value of the role to check against
+        """
+        return self.roles >= role
 
     def reset_username(self, new_username):
         """change the username of this user object

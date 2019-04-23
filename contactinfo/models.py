@@ -33,11 +33,20 @@ class ContactInfo(models.Model):
         account = Users.objects.get(username=account)
         return cls(account=account, name=name, phoneNumber=phone_number, email=email, address=address, officeHours=officeHours, officeNumber=officeNumber)
 
-    def updateName(self, username, newName):
-        toupdate = ContactInfo(Name=username)
+    def updateName(self, newName):
 
-        toupdate.name = newName
-        toupdate.save()
+        self.name = newName
+        self.save()
+
+    def updateEmail(self, newEmail):
+
+        self.email = newEmail
+        self.save()
+
+    def updateOfficeHours(self, newHours):
+
+        self.officeHours = newHours
+        self.save()
 
     def get_public(self):
         """Return public contact information which includes - name, email, office hours, office number

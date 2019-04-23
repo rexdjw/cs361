@@ -19,7 +19,7 @@ class AllUsers(View):
   users = Users.objects.all()
   def getKey(user):
     return user.roles
-  all = sorted(users, key=getKey)
+  all = sorted(users, key=getKey, reverse=True)
   def get(self, request):
     return render(request, 'allusers.html', {"all" : self.all})
   def post(self, request):

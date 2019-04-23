@@ -24,3 +24,13 @@ class AllUsers(View):
     return render(request, 'allusers.html', {"all" : self.all})
   def post(self, request):
     return render(request, 'allusers.html', {"all" : self.all})
+
+class CreateUsers(View):
+  def get(self, request):
+    aUser = request.user
+    ok = aUser.is_at_least(4)
+    return render(request, 'createaccount.html', {"ok" : ok})
+  def post(self, request):
+    aUser = request.user
+    ok = aUser.is_at_least(4)
+    return render(request, 'createaccount.html', {"ok" : ok})

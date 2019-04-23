@@ -48,6 +48,21 @@ class ContactInfo(models.Model):
         self.officeHours = newHours
         self.save()
 
+    def updateOfficeNumber(self, newOfficeNumber):
+
+        self.officeNumber = newOfficeNumber
+        self.save()
+
+    def updatePhoneNumber(self, newPhone):
+
+        self.phoneNumber = newPhone
+        self.save()
+
+    def updateAddress(self, newAddress):
+
+        self.address = newAddress
+        self.save()
+
     def get_public(self):
         """Return public contact information which includes - name, email, office hours, office number
 

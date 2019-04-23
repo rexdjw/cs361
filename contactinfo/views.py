@@ -15,14 +15,56 @@ class ContactInfoPage(View):
         nameInput = request.POST["your_name"]
         emailInput = request.POST["email"]
         officeHoursInput = request.POST["officeHours"]
+        officeNumberInput = request.POST["officeNumber"]
+        phoneNumberInput = request.POST["phone"]
+        addressInput = request.POST["address"]
         if(nameInput):
             yourInstance.contactinfo.updateName(nameInput)
         if(emailInput):
             yourInstance.contactinfo.updateEmail(emailInput)
         if(officeHoursInput):
             yourInstance.contactinfo.updateOfficeHours(officeHoursInput)
-        return render(request, 'main/contactInfo.html')
+        if(officeNumberInput):
+            yourInstance.contactinfo.updateOfficeNumber(officeNumberInput)
+        if(phoneNumberInput):
+            yourInstance.contactinfo.updatePhoneNumber(phoneNumberInput)
+        if(addressInput):
+            yourInstance.contactinfo.updateAddress(addressInput)
+        return render(request, 'main/contactInfo.html', {"message": "Contact Info Edited!"})
 
+class ContactInfoPageLink(View):
+    def get(self,request):
+
+        yourInstance = request.user
+
+        if yourInstance.is_at_least(4):
+            return render(request, 'main/contactInfo.html')
+        else:
+
+            return render(request, 'publicContactInfo.html')
+
+    def post(self,request):
+
+        yourInstance = request.user
+        nameInput = request.POST["your_name"]
+        emailInput = request.POST["email"]
+        officeHoursInput = request.POST["officeHours"]
+        officeNumberInput = request.POST["officeNumber"]
+        phoneNumberInput = request.POST["phone"]
+        addressInput = request.POST["address"]
+        if(nameInput):
+            yourInstance.contactinfo.updateName(nameInput)
+        if(emailInput):
+            yourInstance.contactinfo.updateEmail(emailInput)
+        if(officeHoursInput):
+            yourInstance.contactinfo.updateOfficeHours(officeHoursInput)
+        if(officeNumberInput):
+            yourInstance.contactinfo.updateOfficeNumber(officeNumberInput)
+        if(phoneNumberInput):
+            yourInstance.contactinfo.updatePhoneNumber(phoneNumberInput)
+        if(addressInput):
+            yourInstance.contactinfo.updateAddress(addressInput)
+        return render(request, 'main/contactInfo.html')
 
 class OtherContactInfoPage(View):
     def get(self, request):

@@ -94,8 +94,12 @@ class YourClass:
     elif cmd == "editContactInfo":
       if len(args) < 6:
         return "Missing arguments"
+      if len(args) > 6:
+        return "Field does not exist"
       try:
         u = self.getActiveUser(request)
+        if not u:
+          return "Login a user first"
         if len(ContactInfo.objects.filter(account=u)) == 0:
           ContactInfo.create(u.username, args[0], args[1], args[2], args[3], args[4], args[5]).save()
           return "field successfully revised"
@@ -120,6 +124,8 @@ class YourClass:
       ta.save()
       course.assign_TA(ta)
       return "Successfully added TA to course"
+    elif cmd == "sendEmail":
+      return "Failed- Unimplemented"
     elif cmd == "removeTACourse":
       return "Failed- Unimplemented"
       return
@@ -144,7 +150,11 @@ class YourClass:
       return "Failed- Unimplemented"
       return
     elif cmd == "readPublicContactInfo":
-      return
+      return "Failed- Unimplemented"
+    elif cmd == "readAllTAAssignments":
+      return "Failed- Unimplemented"
+    elif cmd == "editAccount":
+      return "Failed- Unimplemented"
     else:
       return "Unrecognized command: " + cmd
 

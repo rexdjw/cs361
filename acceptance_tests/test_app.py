@@ -313,22 +313,40 @@ class TestApp(TestCase):
 
     def test_editContactInfoSuccess(self):
         # Users successfully edits a field in their contact info
-        result = self.app.command("editContactInfo field revision", request=self.request)
+        self.users = Users.create(username="admin", password="admin", roles=8)
+        self.users.set_password('admin')
+        self.users.save()
+
+        self.request.user = self.users
+
+        self.app.command(s="login admin admin", request=self.request)
+
+        result = self.app.command("editContactInfo 1 2 3 4 5 6", request=self.request)
         self.assertEqual(result, "field successfully revised")
 
-    # TODO - editContactInfo while not logged in
+    def test_editContactInfoFail(self):
+        result = self.app.command("editContactInfo 1 2 3 4 5 6", request=self.request)
+        self.assertEqual(result, "Login a user first")
 
     def test_editContactInfoFieldDoesNotExist(self):
         # Users failures to edit a field in their contact info because it doesn't exist
-        result = self.app.command("editOwnContactInfo field revision", request=self.request)
-        self.assertEqual(result, "Field field does not exist")
+        self.users = Users.create(username="admin", password="admin", roles=8)
+        self.users.set_password('admin')
+        self.users.save()
+
+        self.request.user = self.users
+
+        self.app.command(s="login admin admin", request=self.request)
+
+        result = self.app.command("editContactInfo 1 2 3 4 5 6 7", request=self.request)
+        self.assertEqual(result, "Field does not exist")
 
     def test_readTAAssignmentSuccess(self):
         # Users reads TA assignments
         result = self.app.command("readTAAssignment TA", request=self.request)
         self.assertEqual(result, "Failed- Unimplemented")
 
-    def test_resdTAAssignmentFailure(self):
+    def test_readTAAssignmentFailure(self):
         # Users tries to look at a TA that doesn't exist
         result = self.app.command("readTAAssignment TA", request=self.request)
         self.assertEqual(result, "Failed- Unimplemented")
@@ -341,35 +359,26 @@ class TestApp(TestCase):
     def test_readPublicContactInfoSuccess(self):
         # Users reads contact info for another Users
         result = self.app.command("readPublicContactInfo Users field", request=self.request)
-        self.assertEqual(result, "Public info info")
+        self.assertEqual(result, "Failed- Unimplemented")
 
     def test_readPublicContactInfoFailure(self):
         # Users unable to read contact info on invalid Users
         result = self.app.command("readPublicContactInfo Users field", request=self.request)
-        self.assertEqual(result, "Users Users does not exist.")
+        self.assertEqual(result, "Failed- Unimplemented")
 
-    def test_editContactInfoSuccess(self):
-        # Edit contact info for Users
-        result = self.app.command("Users phonenumber email address officeHours", request=self.request)
-        self.assertEqual(result, "Contact info set!")
-
-    def test_editContactInfoFail(self):
-        # Edit contact info for Users fail
-        result = self.app.command("Users phonenumber email address officeHours", request=self.request)
-        self.assertEqual(result, "Users does not exist!")
 
     def test_editAccountInfo(self):
         # Edit account info
-        result = self.app.command("Usersname newUsersname password ta", request=self.request)
-        self.assertEqual(result, "Users account info changed!")
+        result = self.app.command("editAccount newUsersname password ta", request=self.request)
+        self.assertEqual(result, "Failed- Unimplemented")
 
     def test_editAccountInfoFail(self):
         # Edit account info
-        result = self.app.command("Usersname newUsersname password ta", request=self.request)
-        self.assertEqual(result, "Users does not exist!")
+        result = self.app.command("editAccount newUsersname password ta", request=self.request)
+        self.assertEqual(result, "Failed- Unimplemented")
 
     def test_unkCommand(self):
         """unrecognized command"""
         cmd = "skjkdhjfhjskhk"
-        result = self.app.command(cmd)
+        result = self.app.command(cmd, request=self.request)
         self.assertEqual(result, "Unrecognized command: " + cmd)

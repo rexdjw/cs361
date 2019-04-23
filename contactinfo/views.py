@@ -30,7 +30,7 @@ class ContactInfoPage(View):
             yourInstance.contactinfo.updatePhoneNumber(phoneNumberInput)
         if(addressInput):
             yourInstance.contactinfo.updateAddress(addressInput)
-        return render(request, 'main/contactInfo.html')
+        return render(request, 'main/contactInfo.html', {"message": "Contact Info Edited!"})
 
 class ContactInfoPageLink(View):
     def get(self,request):

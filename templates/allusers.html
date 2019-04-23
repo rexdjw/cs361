@@ -7,7 +7,7 @@
 {% if user.is_authenticated %}
   Viewing all users as {{ user.username }}:
   <p><a href="../home">home</a></p>
-    {% for u in Users.objects.all %}
+    {% for u in all %}
         <li>u.username</li>
     {% endfor %}
 {% else %}

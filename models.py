@@ -1,10 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from contactinfo.models import ContactInfo
 
 # Create your models here.
-
-
-from contactinfo.models import ContactInfo
 
 
 class UserGroup(models.Model):
@@ -36,8 +34,10 @@ class Users(AbstractUser):
         :param roles:int in range 0-15
         :param contact_info:contact_info
         """
-        return cls(username=username, password=password, roles=roles, contact_info=contact_info)
-
+        if username=="root":
+            return cls(username=username, password=password, roles=15, contact_info=contact_info)
+        else:
+            return cls(username=username, password=password, roles=roles, contact_info=contact_info)
 
     @staticmethod
     def display_users(role=None):
@@ -49,57 +49,13 @@ class Users(AbstractUser):
         # todo: if role is not None, return all users with specified role
         pass
 
-    def create_account(self, username, password, roles):
-        """create a new user object and add it to the database
-        :param username:string
-        :param password:string
-        :param roles:int in range 0-15
-        """
-        self.username = username
-        self.password = password
-        self.roles = roles
-        self.save()
-
-    def delete_account(self):
-        """remove this user object from the db and voids all fields"""
-        self.username = None
-        self.password = None
-        self.roles = None
-        self.contact_info = None
-        # todo: query db for this username - if it exists, remove it
-
     def display_assignments(self, role):
         # todo: if instructor, display assigned courses
         # todo: if ta, display assigned courses and labs
         pass
 
-    def editContactInfo(self, account, name, phone_number, email, address, office_hours,
-                        office_number):
-        """Edit contact information specifying desired fields
-
-        Requires permissions of supervisor or of the user associated with this contact information
-
-        :param name:string
-        :param phone_number:string
-        :param email:string
-        :param address:string
-        :param office_hours:string
-        :param office_number:string
-        :return:None
-        """
-
-        ci = ContactInfo.objects.filter(account=account)[0]
-        ci.name = name
-        ci.phoneNumber = phone_number
-        ci.email = email
-        ci.address = address
-        ci.officeHours = office_hours
-        ci.officeNumber = office_number
-        ci.save()
-
-    def dispose(self):
-        # todo: what is this?
-        pass
+    def get_absolute_url(self):
+        return f"/contactInfo/{self.username}/"
 
     def is_super(self):
         """query whether this user object has supervisor permission"""
@@ -126,48 +82,73 @@ class Users(AbstractUser):
         if role >= 4:
             return self.is_super()
         if role >= 2:
-            return self.is_admin()
+            return self.is_admin() or self.is_super()
         if role == 1:
-            return self.is_instructor()
-        return self.is_ta()
+            return self.is_instructor() or self.is_admin() or self.is_super()
+        return self.is_ta() or self.is_instructor() or self.is_admin() or self.is_super()
+
+    def is_at_least(self, role):
+        """query whether this user has a role at least as high as the argument
+        :param role:int - the int value of the role to check against
+        """
+        return self.roles >= role
+
+    def printRoles(self):
+        roles = ""
+        if self.is_super():
+            roles += "[Supervisor] "
+        if self.is_admin():
+            roles += "[Administrator] "
+        if self.is_instructor():
+            roles += "[Instructor] "
+        if self.is_ta():
+            roles += "[TA] "
+        return roles
 
     def reset_username(self, new_username):
         """change the username of this user object
         :param new_username:string
         """
         self.username = new_username
-        self.save()
 
     def reset_password(self, new_password):
         """change the password of this user object
         :param new_password:string
         """
         self.password = new_password
-        self.save()
 
     def reset_roles(self, new_roles):
         """change the roles of this user object
         :param new_roles:int in range 0-15
         """
         self.roles = new_roles
-        self.save()
 
-    def set_contact_info(self, name, phone_number, email, address, office_hours=None, office_number=None):
-
-        # todo : why do we have this and editContactInfo? is this the old implementation from when
-        # todo : contact_info was a foreign key?
-
+    def set_contact_info(self, name, phone_number, email, address, office_hours="<not specified>",
+                         office_number="<not specified>"):
         """set the contact information of a user optionally specifying office hours and office number
 
         :param name:string
-        :param phone_numer:string
+        :param phone_number:string
         :param email:string
         :param address:string
         :param office_hours:string
         :param office_number:string
         :return:
         """
-        self.contact_info = ContactInfo(name, phone_number, email, address, office_hours, office_number)
+        if not self.contact_info:
+            ci = ContactInfo.create(self.username, name, phone_number, email, address, office_hours,
+                                    office_number).save()
+            self.contact_info = ci
+        else:
+            ci = self.contact_info
+            ci.name = name
+            ci.phoneNumber = phone_number
+            ci.email = email
+            ci.address = address
+            if office_hours != "<not specified>":
+                ci.officeHours = office_hours
+            if office_number != "<not specified>":
+                ci.officeNumber = office_number
         self.save()
 
     def __str__(self):
@@ -177,15 +158,7 @@ class Users(AbstractUser):
         """
         roles = "User " + self.username + " has "
         if self.roles > 0:
-            if self.is_super():
-                roles + "[Supervisor] "
-            if self.is_admin():
-                roles + "[Administrator] "
-            if self.is_instructor():
-                roles + "[Instructor] "
-            if self.is_ta():
-                roles + "[TA] "
+            roles += self.printRoles()
         else:
             roles += "no "
         return roles + "role permissions."
-

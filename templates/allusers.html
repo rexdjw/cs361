@@ -8,7 +8,7 @@
   Viewing all users as {{ user.username }}:
   <p><a href="../home">home</a></p>
     {% for u in all %}
-        <li>u.username</li>
+      Name: {{ u.username }}<br>
     {% endfor %}
 {% else %}
   <p>You are not logged in</p>

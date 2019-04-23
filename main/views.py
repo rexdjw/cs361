@@ -18,4 +18,6 @@ class Home(View):
 class AllUsers(View):
   all = Users.objects.all()
   def get(self, request):
-    return render(request, 'allusers.html')
+    return render(request, 'allusers.html', {"all" : self.all})
+  def post(self, request):
+    return render(request, 'allusers.html', {"all" : self.all})

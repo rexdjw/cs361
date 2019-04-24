@@ -7,8 +7,8 @@
 {% if user.is_authenticated %}
   Hi {{ user.username }}!
     <p><a href="{% url 'logout' %}">logout</a><br/>
-  <a href="../users/allusers.html">show all users</a><br/>
-  <a href="../users/createaccount.html">create new user</a><br/>
+  <a href="{% url 'allUsers' %}">show all users</a><br/>
+  <a href="{% url 'createAccount' %}">create new user</a><br/>
   <a href="{%  url 'contactInfo' %}">contact info</a></p><br/>
 {% else %}
   <p>You are not logged in</p>

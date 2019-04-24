@@ -35,10 +35,12 @@ class ContactInfoPage(View):
 class ContactInfoPageLink(View):
     def get(self,request):
 
+        from users.models import Users
+        user = Users.objects.filter(username=request.path.rsplit('/')[-2])[0]
         yourInstance = request.user
 
         if yourInstance.is_at_least(4):
-            return render(request, 'main/contactInfo.html')
+            return render(request, 'contactInfoLink.html', {'username': user.username, 'user': user})
         else:
 
             return render(request, 'publicContactInfo.html')

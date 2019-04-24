@@ -1,6 +1,6 @@
 from django.conf.urls import url
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.views.generic.base import TemplateView
 from main import views
 from contactinfo import views as contactInfoviews
@@ -13,6 +13,6 @@ urlpatterns = [
   path('users/', include('django.contrib.auth.urls')),
   path('users/allusers.html', views.AllUsers.as_view()),
   path('users/createaccount.html', views.CreateUsers.as_view()),
-  path('contactInfo/', contactInfoviews.ContactInfoPage.as_view(), name='contactInfo'),
-  path('contactInfo/<u>/', contactInfoviews.ContactInfoPageLink.as_view(), name='otherContactInfo')
+  path('selfContactInfo/', contactInfoviews.ContactInfoPage.as_view(), name='contactInfo'),
+  re_path(r'contactInfo/.', contactInfoviews.ContactInfoPageLink.as_view())
 ]

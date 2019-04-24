@@ -1,0 +1,25 @@
+<!-- templates/home.html -->
+{% extends 'links.html' %}
+
+{% block title %}Contact Info{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<form method="post" action="/contactInfo/">
+        {% csrf_token %}
+        Name : <input id="your_name" type="text" name="your_name" value="{{user.contactinfo.name}}"><br>
+        Email : <input id="email" type="text" name="email" value="{{ user.contactinfo.email }}"><br>
+        Office Hours : <input id="officeHours" type="text" name="officeHours" value="{{ user.contactinfo.officeHours }}"><br>
+        Office Number : <input id="officeNumber" type="text" name="officeNumber" value="{{ user.contactinfo.officeNumber }}"><br>
+        Phone Number : <input id="phone" type="text" name="phone" value="{{ user.contactinfo.phoneNumber }}"><br>
+        Address : <input id="address" type="text" name="address" value="{{ user.contactinfo.address }}"><br>
+        <input type="submit" value="Submit">
+    </form>
+<p>{{ message }}</p>
+<p><a href="../home">home</a></p>
+{% else %}
+  <p>You are not logged in</p>
+  <a href="{% url 'login' %}">login</a> |
+  <a href="{% url 'signup' %}">signup</a>
+{% endif %}
+{% endblock %}

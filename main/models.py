@@ -73,7 +73,9 @@ class YourClass:
           try:
             user = Users.create(username, password, role)
             user.set_password(password) #hashing fix
-            user.save()
+            user.save() #ci looks for user in db so save first
+            user.set_contact_info("","","","","","") #initialize ci
+            user.save() #now save updated ci
           except:
             return "Account already exists!"
           return "Account created successfully."

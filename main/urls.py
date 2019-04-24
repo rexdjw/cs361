@@ -11,8 +11,8 @@ urlpatterns = [
   path('home/', TemplateView.as_view(template_name='home.html'), name='home'),
   path('users/', include('users.urls')),
   path('users/', include('django.contrib.auth.urls')),
-  path('users/allusers.html', views.AllUsers.as_view()),
-  path('users/createaccount.html', views.CreateUsers.as_view()),
+  path('users/allusers', views.AllUsers.as_view(), name='allUsers'),
+  path('users/createaccount', views.CreateUsers.as_view(), name='createAccount'),
   path('selfContactInfo/', contactInfoviews.ContactInfoPage.as_view(), name='contactInfo'),
   re_path(r'contactInfo/.', contactInfoviews.ContactInfoPageLink.as_view())
 ]

@@ -34,10 +34,7 @@ class Users(AbstractUser):
         :param roles:int in range 0-15
         :param contact_info:contact_info
         """
-        if username=="root":
-            return cls(username=username, password=password, roles=15, contact_info=contact_info)
-        else:
-            return cls(username=username, password=password, roles=roles, contact_info=contact_info)
+        return cls(username=username, password=password, roles=roles, contact_info=contact_info)
 
     @staticmethod
     def display_users(role=None):

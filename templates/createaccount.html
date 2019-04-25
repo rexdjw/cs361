@@ -6,8 +6,13 @@
 {% block content %}
 {% if user.is_authenticated %}
     Creating account as {{ user.printRoles }}:
+    {% if not auth %}
+        <p>Permission denied - Your role may not create accounts of this type!</p>
+    {% elif create %}
+        <p>Account created successfully.</p>
+    {% endif %}
     {% if ok %}
-        <form method="post" action="/createAccount/">
+        <form method="post" action="/users/createaccount">
             {% csrf_token %}
             Username : <input id="username" type="text" name="username" value=""><br>
             Password : <input id="password" type="text" name="password" value=""><br>

@@ -29,8 +29,19 @@ class CreateUsers(View):
   def get(self, request):
     aUser = request.user
     ok = aUser.is_at_least(4)
-    return render(request, 'createaccount.html', {"ok" : ok})
+    auth = True
+    create = False
+    return render(request, 'createaccount.html', {"ok" : ok, "auth" : auth, "create" : create})
+
   def post(self, request):
     aUser = request.user
+    username = request.POST.get("username", "")
+    password = request.POST.get("password", "")
+    roles = int(request.POST.get("roles", ""))
     ok = aUser.is_at_least(4)
-    return render(request, 'createaccount.html', {"ok" : ok})
+    auth = aUser.is_at_least(roles) and roles < 8 #cannot create multiple supervisors
+    create = False
+    if ok and auth:
+        Users.create(username, password, roles).save()
+        create = True
+    return render(request, 'createaccount.html', {"ok" : ok, "auth" : auth, "create" : create})

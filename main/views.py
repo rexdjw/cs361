@@ -42,6 +42,8 @@ class CreateUsers(View):
     auth = aUser.is_at_least(roles) and roles < 8 #cannot create multiple supervisors
     create = False
     if ok and auth:
-        Users.create(username, password, roles).save()
+        user = Users.create(username, password, roles)
+        user.set_password(password)
+        user.save()
         create = True
     return render(request, 'createaccount.html', {"ok" : ok, "auth" : auth, "create" : create})

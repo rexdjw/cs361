@@ -1,52 +1,21 @@
 from django.shortcuts import render
 from django.views import View
-from contactinfo.models import ContactInfo
-from main.models import YourClass
+from users.models import Users
 # Create your views here.
 
 
 class ContactInfoPage(View):
     def get(self,request):
-        return render(request, 'main/contactInfo.html')
-
-    def post(self,request):
-
-        yourInstance = request.user
-        nameInput = request.POST["your_name"]
-        emailInput = request.POST["email"]
-        officeHoursInput = request.POST["officeHours"]
-        officeNumberInput = request.POST["officeNumber"]
-        phoneNumberInput = request.POST["phone"]
-        addressInput = request.POST["address"]
-        if(nameInput):
-            yourInstance.contactinfo.updateName(nameInput)
-        if(emailInput):
-            yourInstance.contactinfo.updateEmail(emailInput)
-        if(officeHoursInput):
-            yourInstance.contactinfo.updateOfficeHours(officeHoursInput)
-        if(officeNumberInput):
-            yourInstance.contactinfo.updateOfficeNumber(officeNumberInput)
-        if(phoneNumberInput):
-            yourInstance.contactinfo.updatePhoneNumber(phoneNumberInput)
-        if(addressInput):
-            yourInstance.contactinfo.updateAddress(addressInput)
-        return render(request, 'main/contactInfo.html', {"message": "Contact Info Edited!"})
-
-class ContactInfoPageLink(View):
-    def get(self,request):
-
-        from users.models import Users
         user = Users.objects.filter(username=request.path.rsplit('/')[-2])[0]
         yourInstance = request.user
-
-        if yourInstance.is_at_least(4):
-            return render(request, 'contactInfoLink.html', {'username': user.username, 'user': user})
+        if yourInstance.is_at_least(4) or yourInstance == user:
+            return render(request, 'main/contactInfo.html', {'username': user.username, 'user': user})
         else:
+            return render(request, 'publicContactInfo.html', {'username': user.username, 'user': user})
 
-            return render(request, 'publicContactInfo.html')
 
     def post(self,request):
-
+        user = Users.objects.filter(username=request.path.rsplit('/')[-1])[0]
         yourInstance = request.user
         nameInput = request.POST["your_name"]
         emailInput = request.POST["email"]
@@ -54,27 +23,52 @@ class ContactInfoPageLink(View):
         officeNumberInput = request.POST["officeNumber"]
         phoneNumberInput = request.POST["phone"]
         addressInput = request.POST["address"]
-        if(nameInput):
-            yourInstance.contactinfo.updateName(nameInput)
-        if(emailInput):
-            yourInstance.contactinfo.updateEmail(emailInput)
-        if(officeHoursInput):
-            yourInstance.contactinfo.updateOfficeHours(officeHoursInput)
-        if(officeNumberInput):
-            yourInstance.contactinfo.updateOfficeNumber(officeNumberInput)
-        if(phoneNumberInput):
-            yourInstance.contactinfo.updatePhoneNumber(phoneNumberInput)
-        if(addressInput):
-            yourInstance.contactinfo.updateAddress(addressInput)
-        return render(request, 'main/contactInfo.html')
+        if nameInput is not None:
+            user.contactinfo.updateName(nameInput)
+        if emailInput is not None:
+            user.contactinfo.updateEmail(emailInput)
+        if officeHoursInput is not None:
+            user.contactinfo.updateOfficeHours(officeHoursInput)
+        if officeNumberInput is not None:
+            user.contactinfo.updateOfficeNumber(officeNumberInput)
+        if phoneNumberInput is not None:
+            user.contactinfo.updatePhoneNumber(phoneNumberInput)
+        if addressInput is not None:
+            user.contactinfo.updateAddress(addressInput)
+        return render(request, 'main/contactInfo.html', {'username': user.username, 'user': user},
+                      {"message": "Contact Info Edited!"})
 
-class OtherContactInfoPage(View):
-    def get(self, request):
-        return render(request, 'main/contactInfo.html')
+class ContactInfoPageLink(View):
 
-    def post(self, request):
-        yourInstance = ContactInfo()
+    def get(self,request):
+        user = Users.objects.filter(username=request.path.rsplit('/')[-2])[0]
+        yourInstance = request.user
+        if yourInstance.is_at_least(4) or yourInstance == user:
+            return render(request, 'main/contactInfo.html', {'username': user.username, 'user': user})
+        else:
+            return render(request, 'publicContactInfo.html', {'username': user.username, 'user': user})
+
+
+    def post(self,request):
+        user = Users.objects.filter(username=request.path.rsplit('/')[-1])[0]
+        yourInstance = request.user
         nameInput = request.POST["your_name"]
-        if nameInput:
-            yourInstance.updateName(request.username, nameInput)
-        return render(request, 'main/contactInfo.html')
+        emailInput = request.POST["email"]
+        officeHoursInput = request.POST["officeHours"]
+        officeNumberInput = request.POST["officeNumber"]
+        phoneNumberInput = request.POST["phone"]
+        addressInput = request.POST["address"]
+        if nameInput is not None:
+            user.contactinfo.updateName(nameInput)
+        if emailInput is not None:
+            user.contactinfo.updateEmail(emailInput)
+        if officeHoursInput is not None:
+            user.contactinfo.updateOfficeHours(officeHoursInput)
+        if officeNumberInput is not None:
+            user.contactinfo.updateOfficeNumber(officeNumberInput)
+        if phoneNumberInput is not None:
+            user.contactinfo.updatePhoneNumber(phoneNumberInput)
+        if addressInput is not None:
+            user.contactinfo.updateAddress(addressInput)
+        return render(request, 'main/contactInfo.html', {'username': user.username, 'user': user},
+                      {"message": "Contact Info Edited!"})

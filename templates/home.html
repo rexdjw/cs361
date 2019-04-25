@@ -5,11 +5,11 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-  Hi {{ user.username }}!
-    <p><a href="{% url 'logout' %}">logout</a><br/>
-  <a href="{% url 'allUsers' %}">show all users</a><br/>
+  Hi, {{ user.username }}!
+  <p><a href="{% url 'allUsers' %}">show all users</a><br/>
   <a href="{% url 'createAccount' %}">create new user</a><br/>
-  <a href="{%  url 'contactInfo' %}">contact info</a></p><br/>
+  <a href="{{ user.get_absolute_url }}">contact info</a><br/>
+  <a href="{% url 'logout' %}">logout</a><br/></p>
 {% else %}
   <p>You are not logged in</p>
   <a href="{% url 'login' %}">login</a> |

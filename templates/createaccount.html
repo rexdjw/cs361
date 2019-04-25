@@ -14,15 +14,14 @@
     {% if ok %}
         <form method="post" action="/users/createaccount">
             {% csrf_token %}
-            Username : <input id="username" type="text" name="username" value=""><br>
-            Password : <input id="password" type="text" name="password" value=""><br>
-            Roles : <input id="roles" type="number" name="roles" value=0><br>
+            Username: <input id="username" type="text" name="username" value=""><br>
+            Password: <input id="password" type="text" name="password" value=""><br>
+            Roles: <input id="roles" type="number" name="roles" value=0><br>
             <input type="submit" value="Submit">
         </form>
     {% else %}
       <p>You do not have permission to create accounts.</p>
     {% endif %}
-<p><a href="{% url 'home' %}">home</a></p>
 {% else %}
   <p>You are not logged in</p>
   <a href="{% url 'login' %}">login</a> |

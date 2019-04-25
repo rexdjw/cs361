@@ -5,7 +5,7 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-<form method="post" action="/contactInfo/">
+<form method="post" action="/contactInfo/{{ user.username }}">
         {% csrf_token %}
         Name : <input id="your_name" type="text" name="your_name" value="{{user.contactinfo.name}}"><br>
         Email : <input id="email" type="text" name="email" value="{{ user.contactinfo.email }}"><br>

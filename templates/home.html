@@ -8,6 +8,7 @@
   Hi, {{ user.username }}!
   <p><a href="{% url 'allUsers' %}">show all users</a><br/>
   <a href="{% url 'createAccount' %}">create new user</a><br/>
+      <a href="{% url 'createCourse' %}">Create New Course</a><br/>
   <a href="{{ user.get_absolute_url }}">contact info</a><br/>
   <a href="{% url 'logout' %}">logout</a><br/></p>
 {% else %}

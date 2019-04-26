@@ -4,6 +4,7 @@ from django.urls import path, include, re_path
 from django.views.generic.base import TemplateView
 from main import views
 from contactinfo import views as contactInfoviews
+from course import views as CourseViews
 
 urlpatterns = [
   url(r'^admin/', admin.site.urls),
@@ -13,6 +14,7 @@ urlpatterns = [
   path('users/', include('django.contrib.auth.urls')),
   path('users/allusers', views.AllUsers.as_view(), name='allUsers'),
   path('users/createaccount', views.CreateUsers.as_view(), name='createAccount'),
-  path('users/createCourse', views.CreateCourse.as_view(), name = 'createCourse'),
+  path('users/courses', CourseViews.AllCourses.as_view(), name='AllCourses'),
+  path('users/createCourse', CourseViews.CreateCourse.as_view(), name = 'createCourse'),
   re_path(r'contactInfo/', contactInfoviews.ContactInfoPage.as_view(), name='contactInfo')
 ]

@@ -17,7 +17,7 @@
             {% csrf_token %}
             Username: <input id="username" type="text" name="username" value=""><br>
             Password: <input id="password" type="text" name="password" value=""><br>
-            Roles: <input id="roles" type="number" name="roles" value=0><br>
+            Roles: <input id="roles" type="number" name="roles" min = 0 max = 8><br>
             <input type="submit" value="Submit">
         </form>
     {% else %}

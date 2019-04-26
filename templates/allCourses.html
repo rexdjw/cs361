@@ -1,0 +1,17 @@
+<!-- templates/allCourses.html -->
+{% extends 'links.html' %}
+
+{% block title %}All Courses{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+  Viewing all Courses as {{ user.username }}:<br><br>
+    {% for c in all %}
+        <a href='{{ c.get_absolute_url }}'>{{ c.courseName }} {{ c.department }} {{ c.courseNumber }}</a><br>
+    {% endfor %}
+{% else %}
+  <p>You are not logged in</p>
+  <a href="{% url 'login' %}">login</a> |
+  <a href="{% url 'signup' %}">signup</a>
+{% endif %}
+{% endblock %}

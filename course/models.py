@@ -134,4 +134,7 @@ class Course(models.Model):
     def __str__(self):
         return self.courseName
 
+    def get_absolute_url(self):
+        return f"/courses/{self.courseName}/"
+
 

@@ -15,7 +15,7 @@
             {% csrf_token %}
             Course Name: <input id="Course Name" type="text" name="Course Name" value=""><br>
             Department: <input id="Department" type="text" name="Department" value=""><br>
-            Course Number: <input id="Course Number" type="number" name="Course Number" value=000><br>
+            Course Number: <input id="Course Number" type="number" name="Course Number" min=000 max = 999><br>
             <input type="submit" value="Submit">
         </form>
     {% else %}

@@ -1,0 +1,29 @@
+<!-- templates/createCourse.html -->
+{% extends 'links.html' %}
+
+{% block title %}Create Course{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+    Creating Course as {{ user.printRoles }}:
+    {% if create %}
+        <p>Course created successfully.</p>
+    {% endif %}
+    {% if permission_check %}
+        <p>{{ message }}</p>
+        <form method="post" action="/users/createCourse">
+            {% csrf_token %}
+            Course Name: <input id="Course Name" type="text" name="Course Name" value=""><br>
+            Department: <input id="Department" type="text" name="Department" value=""><br>
+            Course Number: <input id="Course Number" type="number" name="Course Number" value=000><br>
+            <input type="submit" value="Submit">
+        </form>
+    {% else %}
+      <p>You do not have permission to create Courses.</p>
+    {% endif %}
+{% else %}
+  <p>You are not logged in</p>
+  <a href="{% url 'login' %}">login</a> |
+  <a href="{% url 'signup' %}">signup</a>
+{% endif %}
+{% endblock %}

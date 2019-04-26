@@ -9,9 +9,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link rel="stylesheet" href="{% static "css/style.css" %}">
 </head>
-<body>
+<ul>
+    <li><a href="../">Command Line</a></li>
+    <li><a href="/home">Home</a></li>
+</ul>
+
+<div id = "centerDiv" name="centerDiv">
     {% block content %}{% endblock content %}
-            <p>Home: <a href="/home">(web interface)</a> ||
-    <a href="../">(command line)</a></p>
-</body>
+</div>
 </html>

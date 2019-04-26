@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views import View
 from main.models import YourClass
 from users.models import Users
+from contactinfo.models import ContactInfo
 # Create your views here.
 
 
@@ -42,10 +43,17 @@ class CreateUsers(View):
     roles = int(request.POST.get("roles", ""))
     ok = aUser.is_at_least(4)
     auth = aUser.is_at_least(roles) and roles < 8 #cannot create multiple supervisors
+
+    alreadyCreated = Users.objects.filter(username=username)
+
     create = False
-    if ok and auth:
+    if ok and auth and not alreadyCreated:
         user = Users.create(username, password, roles)
         user.set_password(password)
         user.save()
+        ContactInfo.objects.create(account=user)
         create = True
-    return render(request, 'createaccount.html', {"ok" : ok, "auth" : auth, "create" : create})
+        return render(request, 'createaccount.html', {"ok" : ok, "auth" : auth, "create" : create})
+    else:
+      return render(request, 'createaccount.html', {"ok" : ok, "auth" : auth, "create" : create,
+                                                    "message": "Error! Account already exists!"})

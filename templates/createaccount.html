@@ -12,6 +12,7 @@
         <p>Account created successfully.</p>
     {% endif %}
     {% if ok %}
+        <p>{{ message }}</p>
         <form method="post" action="/users/createaccount">
             {% csrf_token %}
             Username: <input id="username" type="text" name="username" value=""><br>

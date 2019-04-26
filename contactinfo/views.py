@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views import View
 from users.models import Users
+from contactinfo.models import ContactInfo
 # Create your views here.
 
 
@@ -16,13 +17,17 @@ class ContactInfoPage(View):
 
     def post(self,request):
         user = Users.objects.filter(username=request.path.rsplit('/')[-1])[0]
-        yourInstance = request.user
         nameInput = request.POST["your_name"]
         emailInput = request.POST["email"]
         officeHoursInput = request.POST["officeHours"]
         officeNumberInput = request.POST["officeNumber"]
         phoneNumberInput = request.POST["phone"]
         addressInput = request.POST["address"]
+
+        ci = ContactInfo.objects.filter(account=user)
+
+        if not ci.exists():
+            ContactInfo.objects.create(account=user)
         if nameInput is not None:
             user.contactinfo.updateName(nameInput)
         if emailInput is not None:
@@ -35,8 +40,8 @@ class ContactInfoPage(View):
             user.contactinfo.updatePhoneNumber(phoneNumberInput)
         if addressInput is not None:
             user.contactinfo.updateAddress(addressInput)
-        return render(request, 'main/contactInfo.html', {'username': user.username, 'user': user},
-                      {"message": "Contact Info Edited!"})
+        return render(request, 'main/contactInfo.html', {'username': user.username, 'user': user,
+                                                         "message": "Contact Info Edited!"})
 
 class ContactInfoPageLink(View):
 

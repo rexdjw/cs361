@@ -4,8 +4,8 @@ from course.models import Course
 
 class AllCourses(View):
   def get(self, request):
-    courses = Course.objects.all()
-    self.all = sorted(courses, reverse=True)
+    self.all = Course.objects.all()
+
     return render(request, 'allCourses.html', {"all" : self.all})
   def post(self, request):
     return render(request, 'allCourses.html', {"all" : self.all})

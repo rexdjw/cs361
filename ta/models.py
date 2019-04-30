@@ -27,18 +27,19 @@ class TA(models.Model):
         :param number_of_labs: Int
         :return:Void
         """
+        self.update_grader_status(grader_status)
+        self.update_number_labs(number_of_labs)
+        self.save()
 
-        # Only populate grader_status if it's a boolean (TODO: DEFAULT FALSE???)
-        if isinstance(grader_status, bool):
-            self.grader_status = grader_status
-        else:
-            raise ValueError('Grader status input is not valid, please enter True or False.')
+    def update_grader_status(self, graderStatus):
 
-        # Only populate number_of_labs if it's an int
-        if type(number_of_labs) is int and number_of_labs >= 0:
-            self.number_of_labs = number_of_labs
-        else:
-            raise ValueError('Number of labs input is not valid, please enter a positive integer.')
+        self.grader_status = graderStatus
+        self.save()
+
+    def update_number_labs(self, labs):
+
+        self.number_of_labs = labs
+        self.save()
 
     def __str__(self):
         return self.account.username

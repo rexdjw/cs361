@@ -9,9 +9,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link rel="stylesheet" href="{% static "css/style.css" %}">
 </head>
-<ul>
-    <li><a href="../">Command Line</a></li>
-    <li><a href="/home">Home</a></li>
+<ul class = "horizontal">
+
+{% if user.is_authenticated %}
+    <li style = "float:left"><a href="../">Command Line</a></li>
+    <li style = "float:left"><a href="/home">Home</a></li>
+    <li style = "float:left"><a href={% url 'allUsers' %}>Show All Users</a> </li>
+    <li style = "float:left"><a href="{% url 'AllCourses' %}">All Courses</a></li>
+    <li style = "float:left"><a href="{% url 'createAccount' %}">Create New User</a></li>
+    <li style = "float:left"><a href="{% url 'createCourse' %}">Create New Course</a></li>
+    <li style = "float:left"><a href="{{ user.get_absolute_url }}">ContactInfo</a></li>
+    <li style = "float:right" class="active"><a href="{% url 'logout' %}">Logout</a></li>
+
+{% else %}
+    <li style = "float:left"><a href="../">Command Line</a></li>
+    <li style = "float:left"><a href="/home">Home</a></li>
+{% endif %}
+
 </ul>
 
 <div id = "centerDiv" name="centerDiv">

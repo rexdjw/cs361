@@ -133,6 +133,13 @@ class Users(AbstractUser):
                 ci.officeNumber = office_number
         self.save()
 
+    def printAdmin(self):
+        if self.is_super():
+            return "[Supervisor]"
+        if self.is_admin():
+            return "[Administrator]"
+        return "[Non-admin]"
+
     def printRoles(self):
         roles = ""
         if self.is_super():

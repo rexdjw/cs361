@@ -207,8 +207,27 @@ class TestUser(TestCase):
 
         self.assertEqual(str(self.user), "User username has [TA] role permissions.")
 
-    def test_to_string1(self):
+    def test_to_string2(self):
         Users.create("username", "password", 10).save()
         self.user = Users.objects.get(username="username")
 
         self.assertEqual(str(self.user), "User username has [Supervisor] [Instructor] role permissions.")
+
+    def test_print_admin0(self):
+
+        Users.create("username", "password", randint(0, 15) & 3).save()
+        self.user = Users.objects.get(username="username")
+
+        self.assertEqual(self.user.printAdmin(), "[Non-admin]")
+
+    def test_print_admin1(self):
+        Users.create("username", "password", randint(0, 15) & 7 | 4).save()
+        self.user = Users.objects.get(username="username")
+
+        self.assertEqual(self.user.printAdmin(), "[Administrator]")
+
+    def test_print_admin2(self):
+        Users.create("username", "password", randint(0, 15) | 8).save()
+        self.user = Users.objects.get(username="username")
+
+        self.assertEqual(self.user.printAdmin(), "[Supervisor]")

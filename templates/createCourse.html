@@ -5,7 +5,7 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-    Creating Course as {{ user.printRoles }}:
+    Creating Course as {{ user.printAdmin }}:
     {% if create %}
         <p>Course created successfully.</p>
     {% endif %}

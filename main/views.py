@@ -45,8 +45,7 @@ class CreateUsers(View):
     password = request.POST.get("password", "")
     roles = int(request.POST.get("roles", ""))
     ok = aUser.is_at_least(4)
-    auth = aUser.is_at_least(roles) and roles < 8 #cannot create multiple supervisors
-                                                  # why not??? - Sean
+    auth = aUser.is_at_least(roles)
 
     alreadyCreated = Users.objects.filter(username=username)
 

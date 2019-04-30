@@ -16,5 +16,6 @@ urlpatterns = [
   path('users/createaccount', views.CreateUsers.as_view(), name='createAccount'),
   path('users/courses', CourseViews.AllCourses.as_view(), name='AllCourses'),
   path('users/createCourse', CourseViews.CreateCourse.as_view(), name = 'createCourse'),
-  re_path(r'contactInfo/', contactInfoviews.ContactInfoPage.as_view(), name='contactInfo')
+  re_path(r'contactInfo/', contactInfoviews.ContactInfoPage.as_view(), name='contactInfo'),
+  re_path(r'users/editaccount', views.EditUsers.as_view(), name='editAccount'),
 ]

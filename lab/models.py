@@ -52,4 +52,4 @@ class Lab(models.Model):
             return False
 
     def __str__(self):
-        return self.labNumber
+        return str(self.labNumber)

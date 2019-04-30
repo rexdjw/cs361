@@ -1,0 +1,28 @@
+<!-- templates/home.html -->
+{% extends 'links.html' %}
+
+
+
+{% block content %}
+{% if user.is_authenticated %}
+     {% csrf_token %}
+    Course: {{ course.courseName}}<br>
+    Course Number: {{ course.courseNumber}}<br>
+    Department: {{ course.department}}<br>
+    Instructor: {{ course.instructor.username}}<br>
+    Assigned TA's: <ul>{% for ta in course.TAs.all %}
+
+                    <li>{{ ta }}</li>
+
+                    {% endfor %} </ul>
+    Labs:  <ul>{% for lab in course.labs.all %}
+
+            <li>{{ lab }}</li>
+            {% endfor %}  </ul>
+
+
+
+<p><a href="{% url 'home' %}">home</a></p>
+
+{% endif %}
+{% endblock %}

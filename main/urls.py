@@ -2,6 +2,8 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views.generic.base import TemplateView
+
+from course.views import ViewCourse
 from main import views
 from contactinfo import views as contactInfoviews
 from course import views as CourseViews
@@ -18,4 +20,5 @@ urlpatterns = [
   path('users/createCourse', CourseViews.CreateCourse.as_view(), name = 'createCourse'),
   re_path(r'contactInfo/', contactInfoviews.ContactInfoPage.as_view(), name='contactInfo'),
   re_path(r'users/editaccount', views.EditUsers.as_view(), name='editAccount'),
+  url(r'^courses/(?P<course>[a-zA-Z0-9]+)', ViewCourse.as_view(), name="course"),
 ]

@@ -42,3 +42,12 @@ class CreateCourse(View):
     else:
       return render(request, 'createCourse.html', {"permission_check": permission_check, "create" : create, "message" : "Error! The course "
                                                    + course_name + " " + course_number.__str__() + " already exists"})
+
+class ViewCourse(View):
+  def get(self, request, **kwargs):
+    current_user = request.user
+
+    coursename = self.kwargs["course"] if "course" in self.kwargs else request.session["course"]
+    course = Course.objects.filter(courseName=coursename)[0]
+
+    return render(request, "course.html", {"course": course})

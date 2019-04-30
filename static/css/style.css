@@ -2,7 +2,7 @@ body {
     background: #cecece;
 }
 
-ul {
+.horizontal {
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -10,11 +10,13 @@ ul {
   background-color: #333;
 }
 
-li {
-  float: left;
+
+.horizontal li.active a:hover:not(.active) {
+  background-color: #111;
 }
 
-li a {
+
+.horizontal li a {
   display: block;
   color: white;
   text-align: center;
@@ -23,13 +25,14 @@ li a {
 }
 
 
-li a:hover {
+.horizontal li a:hover {
   background-color: #111;
 }
 
-li.active {
+.horizontal li.active {
   background-color: #4CAF50;
 }
+
 
 div {
   padding: 70px 0;

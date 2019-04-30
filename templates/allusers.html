@@ -7,7 +7,17 @@
 {% if user.is_authenticated %}
   Viewing all users as {{ user.username }}:<br><br>
     {% for u in all %}
-        <a href='{{ u.get_absolute_url }}'>{{u.username}} {{ u.printRoles }}</a><br>
+        {{u.username}}
+        <a href='{{ u.get_absolute_url }}'>[contact info]</a>
+        {% if edit %}
+            || <a href='editaccount/{{u.username}}'>[edit account]</a>
+        {% endif %}
+        <br>
+        {% if u.roles > 0 %}
+            Permissions: {{ u.printRoles }}
+            <br>
+        {% endif %}
+        <br>
     {% endfor %}
 {% else %}
   <p>You are not logged in</p>

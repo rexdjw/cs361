@@ -1,0 +1,33 @@
+<!-- templates/createCourse.html -->
+{% extends 'links.html' %}
+
+{% block title %}Create Lab{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+    Creating Lab as {{ user.printAdmin }} for {{ courseInfo }}:
+    {% if create %}
+        <p>Lab created successfully.</p>
+    {% endif %}
+    {% if permission_check %}
+        <p>{{ message }}</p>
+        <form method="post" action="/createLab/{{ courseInfo }}">
+            {% csrf_token %}
+            Lab Number: <input id="Lab Number" type="text" name="Lab Number" value=""><br>
+            Assign TA:<select name="TAs">
+                {% for ta in course.TAs.all %}
+                <option value = {{ ta }}>{{ ta }}</option>
+                {%  endfor %}
+            </select>
+        </br>
+            <input type="submit" value="Submit">
+        </form>
+    {% else %}
+      <p>You do not have permission to create Courses.</p>
+    {% endif %}
+{% else %}
+  <p>You are not logged in</p>
+  <a href="{% url 'login' %}">login</a> |
+  <a href="{% url 'signup' %}">signup</a>
+{% endif %}
+{% endblock %}

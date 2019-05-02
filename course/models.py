@@ -110,7 +110,7 @@ class Course(models.Model):
         for x in self.TAs.keys():
             print("TA of is " + (self.TAs.get(x)).ta.username)
 
-    def create_lab_section(self, lab_number, ta):
+    def create_lab_section(self, lab_number):
         """create_lab_section and assign it to this course
 
         requires supervisor permissions
@@ -122,8 +122,6 @@ class Course(models.Model):
         # create lab section for this course with lab number, and optionally specified assigned TA
 
         lab_section = Lab(labNumber=lab_number)
-        lab_section.save()
-        lab_section.TAs.add(ta)
         lab_section.save()
 
 

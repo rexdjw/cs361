@@ -7,6 +7,7 @@ from course.views import ViewCourse
 from main import views
 from contactinfo import views as contactInfoviews
 from course import views as CourseViews
+from lab import views as LabViews
 
 urlpatterns = [
   url(r'^admin/', admin.site.urls),
@@ -21,4 +22,5 @@ urlpatterns = [
   re_path(r'contactInfo/', contactInfoviews.ContactInfoPage.as_view(), name='contactInfo'),
   re_path(r'users/editaccount', views.EditUsers.as_view(), name='editAccount'),
   url(r'^courses/(?P<course>[a-zA-Z0-9]+)', ViewCourse.as_view(), name="course"),
+  re_path(r'createLab/', LabViews.CreateLabPage.as_view(), name='createLab')
 ]

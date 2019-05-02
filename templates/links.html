@@ -12,9 +12,9 @@
 <ul class = "horizontal">
 
 {% if user.is_authenticated %}
-    <li style = "float:left"><a href="../">Command Line</a></li>
+    <li style = "float:left"><a href="{% url 'start' %}">Command Line</a></li>
     <li style = "float:left"><a href="/home">Home</a></li>
-    <li style = "float:left"><a href={% url 'allUsers' %}>Show All Users</a> </li>
+    <li style = "float:left"><a href="{% url 'allUsers' %}">Show All Users</a> </li>
     <li style = "float:left"><a href="{% url 'AllCourses' %}">All Courses</a></li>
     <li style = "float:left"><a href="{% url 'createAccount' %}">Create New User</a></li>
     <li style = "float:left"><a href="{% url 'createCourse' %}">Create New Course</a></li>

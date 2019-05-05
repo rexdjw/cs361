@@ -87,4 +87,29 @@ class EditUsers(View):
         edit = True
     return render(request, 'editaccount.html', {"ok": ok, "auth": auth, "edit" : edit, "eUser": eUser})
 
+class DeleteUsers(View):
+  def get(self, request):
+    aUser = request.user
+    dUser = Users.objects.filter(username=request.path.rsplit('/')[-1])[0]
+    ok = aUser.is_at_least(4)
+    auth = True
+    delete = False
+    usr = True
+    return render(request, 'deleteaccount.html',
+                  {"ok" : ok, "auth" : auth, "usr": usr, "delete" : delete, "dUser" : dUser})
+
+  def post(self, request):
+    aUser = request.user
+    dUser = Users.objects.filter(username=request.path.rsplit('/')[-1])[0]
+    username = request.POST.get("username", "")
+    ok = aUser.is_at_least(4)
+    auth = aUser.is_above(dUser.roles)
+    usr = username == dUser.username
+
+    delete = False
+    if ok and auth and usr:
+      dUser.delete()
+      delete = True
+    return render(request, 'deleteaccount.html',
+                  {"ok": ok, "auth": auth, "usr": usr, "delete" : delete, "dUser": dUser})
 

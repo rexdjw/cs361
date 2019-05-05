@@ -21,6 +21,7 @@ urlpatterns = [
   path('users/createCourse', CourseViews.CreateCourse.as_view(), name = 'createCourse'),
   re_path(r'contactInfo/', contactInfoviews.ContactInfoPage.as_view(), name='contactInfo'),
   re_path(r'users/editaccount', views.EditUsers.as_view(), name='editAccount'),
+  re_path(r'users/deleteaccount', views.DeleteUsers.as_view(), name='deleteAccount'),
   url(r'^courses/(?P<course>[a-zA-Z0-9]+)', ViewCourse.as_view(), name="course"),
   re_path(r'createLab/', LabViews.CreateLabPage.as_view(), name='createLab')
 ]

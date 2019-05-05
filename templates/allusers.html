@@ -11,6 +11,7 @@
         <a href='{{ u.get_absolute_url }}'>[contact info]</a>
         {% if edit %}
             || <a href='editaccount/{{u.username}}'>[edit account]</a>
+            || <a href='deleteaccount/{{u.username}}'>[delete account]</a>
         {% endif %}
         <br>
         {% if u.roles > 0 %}

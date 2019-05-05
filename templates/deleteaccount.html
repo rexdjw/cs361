@@ -1,0 +1,32 @@
+<!-- templates/deleteaccount.html -->
+{% extends 'links.html' %}
+
+{% block title %}Delete Account{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+    Deleting account as {{ user.printRoles }}:
+    {% if not auth %}
+        <p>Permission denied - Your role may not delete accounts of this type!</p>
+    {%  elif not usr %}
+        <p>Failed to confirm delete - username mismatch.</p>
+    {% elif delete %}
+        <p>Account deleted successfully.</p>
+    {% endif %}
+    {% if ok and not delete %}
+        <p>{{ message }}</p>
+        <form method="post" action="/users/deleteaccount/{{dUser.username}}">
+            {% csrf_token %}
+            Please re-enter the username you wish to delete to confirm ({{dUser.username}}):<br>
+            Username: <input id="username" type="text" name="username" value=""><br>
+            <input type="submit" value="Submit">
+        </form>
+    {% elif not delete %}
+      <p>You do not have permission to create accounts.</p>
+    {% endif %}
+{% else %}
+  <p>You are not logged in</p>
+  <a href="{% url 'login' %}">login</a> |
+  <a href="{% url 'signup' %}">signup</a>
+{% endif %}
+{% endblock %}

@@ -11,7 +11,7 @@
     {% elif edit %}
         <p>Account edited successfully.</p>
     {% endif %}
-    {% if ok %}
+    {% if ok and not edit %}
         <p>{{ message }}</p>
         <form method="post" action="/users/editaccount/{{eUser.username}}">
             {% csrf_token %}
@@ -22,7 +22,7 @@
             [0 - no permission; Sum for multiple permission e.g. 3 - TA/Instructor]<br>
             <input type="submit" value="Submit">
         </form>
-    {% else %}
+    {% elif not edit %}
       <p>You do not have permission to create accounts.</p>
     {% endif %}
 {% else %}

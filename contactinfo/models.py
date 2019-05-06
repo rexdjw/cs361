@@ -10,7 +10,7 @@ class ContactInfo(models.Model):
     address = models.CharField(max_length=256)
     officeHours = models.CharField(max_length=32)
     officeNumber = models.CharField(max_length=32)
-    account = models.OneToOneField('users.Users', on_delete=models.DO_NOTHING)
+    account = models.OneToOneField('users.Users', on_delete=models.CASCADE)
 
 
     @classmethod

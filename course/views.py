@@ -58,9 +58,13 @@ class AssignInstructor(View):
     current_user = request.user
     coursename = self.kwargs["course"] if "course" in self.kwargs else request.session["course"]
     course = Course.objects.filter(courseName=coursename)[0]
-    permission_check = current_user.is_at_least(4)
+    permission_check = current_user.is_at_least(8)
     from users.models import Users
-    instructors = Users.objects.filter(roles__gte=2).exclude(username=course.instructor.username)
+
+    try:
+      instructors = Users.objects.filter(roles__gte=2).exclude(username__in=[x for x in Users.objects.filter(roles__gte=2)])
+    except:
+      instructors = Users.objects.filter(roles__gte=2)
 
     return render(request, "assignInstructor.html", {"course": course, "permission_check": permission_check, "instructors": instructors})
 
@@ -72,12 +76,15 @@ class AssignInstructor(View):
     if instructor:
       usr = Users.objects.filter(username=instructor)[0]
     course = Course.objects.filter(courseName=coursename)[0]
-    permission_check = current_user.is_at_least(4)
+    permission_check = current_user.is_at_least(8)
+
 
     course.assign_instructor(usr)
 
-
-    instructors = Users.objects.filter(roles__gte=2).exclude(username=instructor)
+    try:
+      instructors = Users.objects.filter(roles__gte=2).exclude(username=instructor)
+    except:
+      instructors = Users.objects.filter(roles__gte=2)
 
     return render(request, "assignInstructor.html",
                   {"course": course, "permission_check": permission_check, "instructors": instructors, "create": True})
@@ -88,7 +95,9 @@ class AssignTA(View):
     current_user = request.user
     coursename = self.kwargs["course"] if "course" in self.kwargs else request.session["course"]
     course = Course.objects.filter(courseName=coursename)[0]
-    permission_check = current_user.is_at_least(2)
+    permission_check = current_user.is_at_least(8)
+    if not permission_check and current_user == course.instructor:
+      permission_check = True
     from users.models import Users
 
     tas = Users.objects.filter(roles__gte=1).exclude(username__in=[x for x in course.TAs.all()])
@@ -103,15 +112,18 @@ class AssignTA(View):
     if ta:
       usr = Users.objects.filter(username=ta)[0]
     course = Course.objects.filter(courseName=coursename)[0]
-    permission_check = current_user.is_at_least(2)
+    permission_check = current_user.is_at_least(8)
+    if not permission_check and current_user == course.instructor:
+      permission_check = True
 
     from ta.models import TA
     try:
-      tmp = TA.objects.filter(account=usr)[0]
+      tmp = Course.TA__set.filter(account=usr)[0]
     except:
       tmp = TA.create(usr)
-      tmp.graderStatus = True
-      tmp.numberOfLabs = 1
+      tmp.graderStatus = request.POST.get("graderStatus", False)
+      print("here is " + request.POST.get("graderStatus"))
+      tmp.numberOfLabs = request.POST.get("numLabs")
       tmp.save()
 
     course.assign_TA(tmp)

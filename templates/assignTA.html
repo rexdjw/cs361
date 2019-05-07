@@ -12,12 +12,15 @@
         <p>{{ message }}</p>
         <form method="post" action="/assignTA/{{ course.courseName  }}">
             {% csrf_token %}
+         Grader Status:<input type="checkbox" id="graderStatus" name="graderStatus" checked value="True">
+        <br>
             TAs:<select name="TAs">
                 {% for ta in tas %}
                 <option value = {{ ta.username }}>{{ ta.username }}</option>
                 {%  endfor %}
             </select>
         </br>
+        Number of Labs: <input id="numLabs" type="number" placeholder="0" name="numLabs" min=000 max = 999 required><br>
             <input type="submit" value="Submit">
         </form>
     {% else %}

@@ -8,6 +8,13 @@
   Viewing all Courses as {{ user.username }}:<br><br>
     {% for c in all %}
         <a href='{{ c.get_absolute_url }}'>{{ c.courseName }} {{ c.department }} {{ c.courseNumber }}</a><br>
+        <form action="/assignInstructor/{{ c.courseName }}">
+        <input type = "submit" value = "Assign an Instructor" />
+    </form>
+         <form action="/assignTA/{{ c.courseName }}">
+        <input type = "submit" value = "Assign a TA" />
+    </form>
+        <br>
     {% endfor %}
 {% else %}
   <p>You are not logged in</p>

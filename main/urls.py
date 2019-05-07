@@ -25,5 +25,5 @@ urlpatterns = [
   url(r'^courses/(?P<course>[a-zA-Z0-9]+)', ViewCourse.as_view(), name="course"),
   re_path(r'createLab/', LabViews.CreateLabPage.as_view(), name='createLab'),
   url(r'^assignInstructor/(?P<course>[a-zA-Z0-9]+)', AssignInstructor.as_view(), name="course"),
-url(r'^assignTA/(?P<course>[a-zA-Z0-9]+)', AssignTA.as_view(), name="course"),
+  url(r'^assignTA/(?P<course>[a-zA-Z0-9]+)', AssignTA.as_view(), name="course"),
 ]

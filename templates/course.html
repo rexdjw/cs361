@@ -1,9 +1,5 @@
-<!-- templates/home.html -->
+<!-- Display course information -->
 {% extends 'links.html' %}
-
-
-
-
 
 {% block content %}
 {% if user.is_authenticated %}
@@ -13,14 +9,16 @@
     Course Number: {{ course.courseNumber}}<br>
     Instructor: {{ course.instructor.username}}<br>
     Assigned TA's: <ul>{% for ta in course.TAs.all %}
-
-                    <li>{{ ta }}</li>
-
+                    <ul>{{ ta }}</ul>
+                    <li>Grader Status:
+                        {% if ta.graderStatus == True %}Yes{% endif %}
+                        {% if ta.graderStatus == False %}No{% endif %}
+                    <li>Number of Labs: {{ ta.numberOfLabs }}</li><br>
                     {% endfor %} </ul>
     Labs:  <ul>{% for lab in course.labs.all %}
-
-            <li>{{ lab }}</li>
-            {% endfor %}  </ul>
+            <ul>Section: {{ lab }}</ul>
+            <li>Assigned TA: {{x for x in lab.TAs.all()}}</li><br>
+                {% endfor %}  </ul>
 
 
     <form action="/createLab/{{ course.courseName }}">

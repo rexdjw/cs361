@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.views import View
 from lab.models import Lab
 from course.models import Course
+from users.models import Users
+from ta.models import TA
 # Create your views here.
 
 
@@ -34,6 +36,14 @@ class CreateLabPage(View):
             courseToAdd = Course.objects.filter(courseName=courseInfo)
             course = courseToAdd.first()
             course.create_lab_section(labNumber)
+
+            TAToAdd = Users.objects.filter(username=TAs)
+            TAToFind = TAToAdd.first()
+            createTA = TA.objects.filter(account=TAToFind)
+            labSection = Lab.objects.filter(labNumber=labNumber)
+            lab = labSection.first()
+            lab.assign_TA(createTA.first())
+
             return render(request, 'createLab.html', {"permission_check": permission_check, "course" : course, "create" : create, "courseInfo": courseInfo})
         else:
             return render(request, 'createLab.html',

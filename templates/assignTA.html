@@ -1,0 +1,31 @@
+{% extends 'links.html' %}
+
+{% block title %}Assign Instructor{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+    Assigning TA as {{ user.printAdmin }} for {{ course.courseName }}:
+    {% if create %}
+        <p>TA Assigned.</p>
+    {% endif %}
+    {% if permission_check %}
+        <p>{{ message }}</p>
+        <form method="post" action="/assignTA/{{ course.courseName  }}">
+            {% csrf_token %}
+            TAs:<select name="TAs">
+                {% for ta in tas %}
+                <option value = {{ ta.username }}>{{ ta.username }}</option>
+                {%  endfor %}
+            </select>
+        </br>
+            <input type="submit" value="Submit">
+        </form>
+    {% else %}
+      <p>You do not have permission to assign TAs.</p>
+    {% endif %}
+{% else %}
+  <p>You are not logged in</p>
+  <a href="{% url 'login' %}">login</a> |
+  <a href="{% url 'signup' %}">signup</a>
+{% endif %}
+{% endblock %}

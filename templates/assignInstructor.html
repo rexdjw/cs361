@@ -1,0 +1,31 @@
+{% extends 'links.html' %}
+
+{% block title %}Assign Instructor{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+    Assigning Instructor as {{ user.printAdmin }} for {{ course.courseName }}:
+    {% if create %}
+        <p>Instructor Assigned.</p>
+    {% endif %}
+    {% if permission_check %}
+        <p>{{ message }}</p>
+        <form method="post" action="/assignInstructor/{{ course.courseName  }}">
+            {% csrf_token %}
+            Instructors:<select name="Instructors">
+                {% for instructor in instructors %}
+                <option value = {{ instructor.username }}>{{ instructor.username }}</option>
+                {%  endfor %}
+            </select>
+        </br>
+            <input type="submit" value="Submit">
+        </form>
+    {% else %}
+      <p>You do not have permission to assign Instructors.</p>
+    {% endif %}
+{% else %}
+  <p>You are not logged in</p>
+  <a href="{% url 'login' %}">login</a> |
+  <a href="{% url 'signup' %}">signup</a>
+{% endif %}
+{% endblock %}

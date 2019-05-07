@@ -8,18 +8,17 @@
     Department: {{ course.department}}<br>
     Course Number: {{ course.courseNumber}}<br>
     Instructor: {{ course.instructor.username}}<br>
-    Assigned TA's: <ul>{% for ta in course.TAs.all %}
-                    <ul>{{ ta }}</ul>
-                    <li>Grader Status:
+    Assigned TA's: {% for ta in course.TAs.all %}
+                    <ul>{{ ta }}&nbsp;
+                    Grader Status:
                         {% if ta.graderStatus == True %}Yes{% endif %}
-                        {% if ta.graderStatus == False %}No{% endif %}
-                    <li>Number of Labs: {{ ta.numberOfLabs }}</li><br>
-                    {% endfor %} </ul>
-    Labs:  <ul>{% for lab in course.labs.all %}
-            <ul>Section: {{ lab }}</ul>
-            <li>Assigned TA: {{x for x in lab.TAs.all()}}</li><br>
-                {% endfor %}  </ul>
-
+                        {% if ta.graderStatus == False %}No{% endif %}&nbsp;
+                    Number of Labs: {{ ta.numberOfLabs }}<br>
+                    {% endfor %} </ul><br>
+    Labs:   {% for lab in course.labs.all %}
+            <ul>Section: {{ lab }}&nbsp;
+            Assigned TA: {% for x in lab.TAs.all %}{{ x }}{% endfor %}
+               {% endfor %}</ul><br>
 
     <form action="/createLab/{{ course.courseName }}">
         <input type = "submit" value = "Create a New Lab" />

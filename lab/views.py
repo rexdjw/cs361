@@ -31,7 +31,12 @@ class CreateLabPage(View):
         lab_already_exists = Lab.objects.filter(labNumber=labNumber)
         create = False
 
-        if permission_check and not lab_already_exists:
+        if(course.instructor != current_user):
+            return render(request, 'createLab.html',
+                          {"permission_check": permission_check, "courseInfo": courseInfo, "course": course,
+                           "create": create, "message": "Error! Only Instructor " + course.instructor.username + " can make labs and assign TAS"})
+
+        elif permission_check and not lab_already_exists:
             create = True
             courseToAdd = Course.objects.filter(courseName=courseInfo)
             course = courseToAdd.first()

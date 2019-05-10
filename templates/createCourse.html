@@ -13,9 +13,9 @@
         <p>{{ message }}</p>
         <form method="post" action="/users/createCourse">
             {% csrf_token %}
-            Course Name: <input id="Course Name" type="text" name="Course Name" value=""><br>
-            Department: <input id="Department" type="text" name="Department" value=""><br>
-            Course Number: <input id="Course Number" type="number" name="Course Number" min=000 max = 999><br>
+            Course Name: <input id="Course Name" type="text" name="Course Name" value="" required><br>
+            Department: <input id="Department" type="text" name="Department" value="" required><br>
+            Course Number: <input id="Course Number" type="number" name="Course Number" min=000 max = 999 required><br>
             <input type="submit" value="Submit">
         </form>
     {% else %}

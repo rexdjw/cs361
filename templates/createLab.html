@@ -13,7 +13,7 @@
         <p>{{ message }}</p>
         <form method="post" action="/createLab/{{ courseInfo }}">
             {% csrf_token %}
-            Lab Number: <input id="Lab Number" type="text" name="Lab Number" value=""><br>
+            Lab Number: <input id="Lab Number" type="number" name="Lab Number" value="" min = 000 max = 999 required><br>
             Assign TA:<select name="TAs">
                 {% for ta in course.TAs.all %}
                 <option value = {{ ta }}>{{ ta }}</option>

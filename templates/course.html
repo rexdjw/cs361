@@ -4,7 +4,7 @@
 {% block content %}
 {% if user.is_authenticated %}
      {% csrf_token %}
-    <b>Course: </b> {{ course.courseName}}<br>
+    <h2><b>Course: </b> {{ course.courseName}}<br></h2>
     <b>Department: </b> {{ course.department}}<br>
     <b>Course Number: </b> {{ course.courseNumber}}<br>
     <b>Instructor: </b> {{ course.instructor.username}}<br><br>

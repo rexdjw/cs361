@@ -33,6 +33,17 @@ body {
   background-color: #4CAF50;
 }
 
+table {
+  margin: auto;
+  border-spacing: 50px 0;
+
+}
+
+
+td {
+  padding: 10px 0;
+
+}
 
 div {
   padding: 70px 0;

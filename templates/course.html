@@ -4,11 +4,11 @@
 {% block content %}
 {% if user.is_authenticated %}
      {% csrf_token %}
-    <b>Course: </b> {{ course.courseName}}<br>
+    <h2><b>Course: </b> {{ course.courseName}}<br></h2>
     <b>Department: </b> {{ course.department}}<br>
     <b>Course Number: </b> {{ course.courseNumber}}<br>
     <b>Instructor: </b> {{ course.instructor.username}}<br><br>
-    <b>Assigned TA's:</b>
+
     <div class="table_container">
         <table class = "center">
             <tr>
@@ -30,11 +30,12 @@
             {% endfor %}
         </table>
     </div>
-    <b>Labs:</b>
+
     <div class ="table_container">
         <table class = "center">
+
             <tr>
-                <th>Section</th>
+                <th>Lab Section</th>
                 <th>Assigned TA</th>
             </tr>
             {% for lab in course.labs.all %}

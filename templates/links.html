@@ -18,7 +18,6 @@
     <li style = "float:left"><a href="{% url 'AllCourses' %}">All Courses</a></li>
     <li style = "float:left"><a href="{% url 'createAccount' %}">Create New User</a></li>
     <li style = "float:left"><a href="{% url 'createCourse' %}">Create New Course</a></li>
-    <li style = "float:left"><a href="{{ user.get_absolute_url }}">ContactInfo</a></li>
     <li style = "float:right" class="active"><a href="{% url 'logout' %}">Logout</a></li>
 
 {% else %}

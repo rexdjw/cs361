@@ -31,10 +31,10 @@ class CreateLabPage(View):
         lab_already_exists = Lab.objects.filter(labNumber=labNumber)
         create = False
 
-        if(course.instructor != current_user):
+        if((current_user.roles != 8) and (course.instructor != current_user)):
             return render(request, 'createLab.html',
                           {"permission_check": permission_check, "courseInfo": courseInfo, "course": course,
-                           "create": create, "message": "Error! Only Instructor " + course.instructor.username + " can make labs and assign TAS"})
+                           "create": create, "message": "Error! Only Surpervisors or Instructor " + course.instructor.username + " can make labs and assign TAS"})
 
         elif permission_check and not lab_already_exists:
             create = True
@@ -42,12 +42,13 @@ class CreateLabPage(View):
             course = courseToAdd.first()
             course.create_lab_section(labNumber)
 
-            TAToAdd = Users.objects.filter(username=TAs)
-            TAToFind = TAToAdd.first()
-            createTA = TA.objects.filter(account=TAToFind)
-            labSection = Lab.objects.filter(labNumber=labNumber)
-            lab = labSection.first()
-            lab.assign_TA(createTA.first())
+            if TAs is None:
+                TAToAdd = Users.objects.filter(username=TAs)
+                TAToFind = TAToAdd.first()
+                createTA = TA.objects.filter(account=TAToFind)
+                labSection = Lab.objects.filter(labNumber=labNumber)
+                lab = labSection.first()
+                lab.assign_TA(createTA.first())
 
             return render(request, 'createLab.html', {"permission_check": permission_check, "course" : course, "create" : create, "courseInfo": courseInfo})
         else:

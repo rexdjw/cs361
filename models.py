@@ -1,164 +1,167 @@
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.hashers import check_password
 from django.db import models
-from contactinfo.models import ContactInfo
 
 # Create your models here.
+from django.template.context_processors import request
+
+from contactinfo.models import ContactInfo
+from course.models import Course
+from lab.models import Lab
+from ta.models import TA
+from users.models import Users
 
 
-class UserGroup(models.Model):
-    name = models.CharField(max_length=25)
-    roles = models.IntegerField()
+class YourClass:
+  # createAccount
+  # deleteAccount
+  # editContactInfo
+  # createCourse
+  # login
 
-
-    class Meta:
-        verbose_name_plural = "User Groups"
-
-    def __str__(self):
-        return f"{self.name}"
-
-
-class Users(AbstractUser):
-    roles = models.IntegerField(null=True, default=0)
-    user_group = models.ForeignKey(UserGroup, on_delete=models.CASCADE, blank=True, null=True)
-    contact_info = models.OneToOneField(ContactInfo, null=True, on_delete=models.CASCADE)
-
-    @classmethod
-    def list_by_user_group_id(cls, user_group_id):
-        return list(cls.objects.filter(user_group__id=user_group_id))
-
-    @classmethod
-    def create(cls, username=None, password=None, roles=0, contact_info=None):
-        """create a course object requires course name, department, and course number
-        :param username:string
-        :param password:string
-        :param roles:int in range 0-15
-        :param contact_info:contact_info
-        """
-        if username=="root":
-            return cls(username=username, password=password, roles=15, contact_info=contact_info)
+  def command(self, s, request):
+    try:
+      currentUser = self.getActiveUser(request)
+    except:
+      pass
+    tokens = s.split()
+    cmd = tokens[0]
+    args = tokens[1:]
+    if cmd == "login":
+      if len(args) < 2:
+        return "Insufficient arguments for command " + cmd
+      username = args[0]
+      password = args[1]
+      try:
+        user = Users.objects.get(username=username)
+        if user.check_password(password):
+          login(request, user)
+          return "Login successful."
         else:
-            return cls(username=username, password=password, roles=roles, contact_info=contact_info)
-
-    @staticmethod
-    def display_users(role=None):
-        """display all users in the database, or all users of the specified role if provided
-        this is provided as a static method since it is not particular to any given user
-        :param role:int in range 0-15
-        """
-        # todo: return a list of all users
-        # todo: if role is not None, return all users with specified role
-        pass
-
-    def display_assignments(self, role):
-        # todo: if instructor, display assigned courses
-        # todo: if ta, display assigned courses and labs
-        pass
-
-    def get_absolute_url(self):
-        return f"/contactInfo/{self.username}/"
-
-    def is_super(self):
-        """query whether this user object has supervisor permission"""
-        return (self.roles & 8) == 8
-
-    def is_admin(self):
-        """query whether this user object has administrator permission"""
-        return (self.roles & 4) == 4
-
-    def is_instructor(self):
-        """query whether this user object has instructor permission"""
-        return (self.roles & 2) == 2
-
-    def is_ta(self):
-        """query whether this user object has ta permission"""
-        return (self.roles & 1) == 1
-
-    def is_above(self, role):
-        """query whether this user has a strictly higher role than the argument
-        :param role:int - the int value of the role to check against
-        """
-        if role >= 8:
-            return False
-        if role >= 4:
-            return self.is_super()
-        if role >= 2:
-            return self.is_admin() or self.is_super()
-        if role == 1:
-            return self.is_instructor() or self.is_admin() or self.is_super()
-        return self.is_ta() or self.is_instructor() or self.is_admin() or self.is_super()
-
-    def is_at_least(self, role):
-        """query whether this user has a role at least as high as the argument
-        :param role:int - the int value of the role to check against
-        """
-        return self.roles >= role
-
-    def printRoles(self):
-        roles = ""
-        if self.is_super():
-            roles += "[Supervisor] "
-        if self.is_admin():
-            roles += "[Administrator] "
-        if self.is_instructor():
-            roles += "[Instructor] "
-        if self.is_ta():
-            roles += "[TA] "
-        return roles
-
-    def reset_username(self, new_username):
-        """change the username of this user object
-        :param new_username:string
-        """
-        self.username = new_username
-
-    def reset_password(self, new_password):
-        """change the password of this user object
-        :param new_password:string
-        """
-        self.password = new_password
-
-    def reset_roles(self, new_roles):
-        """change the roles of this user object
-        :param new_roles:int in range 0-15
-        """
-        self.roles = new_roles
-
-    def set_contact_info(self, name, phone_number, email, address, office_hours="<not specified>",
-                         office_number="<not specified>"):
-        """set the contact information of a user optionally specifying office hours and office number
-
-        :param name:string
-        :param phone_number:string
-        :param email:string
-        :param address:string
-        :param office_hours:string
-        :param office_number:string
-        :return:
-        """
-        if not self.contact_info:
-            ci = ContactInfo.create(self.username, name, phone_number, email, address, office_hours,
-                                    office_number).save()
-            self.contact_info = ci
+          return "Login failed, wrong password"
+      except Exception as e:
+        print(e)
+        return "Login failed, no such user"
+    elif cmd == 'logout':
+      logout(request)
+      return "Logged out"
+    elif cmd == "createCourse":
+      return "Pass - implemented in Web Interface not Command Line."
+      if len(args) < 3:
+        return "Insufficient arguments for command " + cmd
+      coursename = args[0]
+      department = args[1]
+      coursenumber = args[2]
+      permission = True  # todo : check permissions of active user
+      Course.create(coursename, department, coursenumber).save()
+      return "Course created successfully."
+    elif cmd == "createAccount":
+      if len(args) < 3:
+        return "Insufficient arguments for command " + cmd
+      username = args[0]
+      password = args[1]
+      role = int(args[2])
+      try:
+        permission = self.getActiveUser(request).is_at_least(4)
+      except:
+        return "Permission denied - Your role may not create accounts!"
+      greater = self.getActiveUser(request).is_at_least(role)
+      if permission:
+        if not greater:
+          return "Permission denied - Your role may not create accounts of this type!"
         else:
-            ci = self.contact_info
-            ci.name = name
-            ci.phoneNumber = phone_number
-            ci.email = email
-            ci.address = address
-            if office_hours != "<not specified>":
-                ci.officeHours = office_hours
-            if office_number != "<not specified>":
-                ci.officeNumber = office_number
-        self.save()
+          try:
+            user = Users.create(username, password, role)
+            user.set_password(password) #hashing fix
+            user.save() #ci looks for user in db so save first
+            user.set_contact_info("","","","","","") #initialize ci
+            user.save() #now save updated ci
+          except:
+            return "Account already exists!"
+          return "Account created successfully."
+      else:
+        return "Permission denied - Your role may not create accounts!"
+    elif cmd == "deleteAccount":
+      if len(args) < 1:
+        return "Insufficient arguments for command " + cmd
+      username = args[0]
+      permission = self.getActiveUser(request).is_at_least(4)
+      user = Users.objects.filter(username=username)
+      if len(user) == 0:
+        return "No such user"
+      if not self.getActiveUser(request).is_at_least(user[0].roles):
+        return "Permission denied - Your role may not delete accounts of this type!"
+      user[0].delete()
+      return "User deleted"
+    elif cmd == "editContactInfo":
+      if len(args) < 6:
+        return "Missing arguments"
+      if len(args) > 6:
+        return "Field does not exist"
+      try:
+        u = self.getActiveUser(request)
+        if not u:
+          return "Login a user first"
+        if len(ContactInfo.objects.filter(account=u)) == 0:
+          ContactInfo.create(u.username, args[0], args[1], args[2], args[3], args[4], args[5]).save()
+          return "field successfully revised"
+        u.editContactInfo(u, args[0], args[1], args[2], args[3], args[4], args[5])
+        return "field successfully revised"
+      except:
+        return "Login a user first"
+    # todo : support other commands
+    elif cmd == "assignInstructor":
+      return "Pass - implemented in Web Interface not Command Line."
+      course = Course.objects.get(courseName=args[0])
+      user = Users.objects.get(username=args[1])
+      course.assign_instructor(user)
+      return "Successfully added instructor to course"
+    elif cmd == "removeInstructor":
+      return "Pass - implemented in Web Interface not Command Line."
+    elif cmd == "assignTACourse":
+      return "Pass - implemented in Web Interface not Command Line."
+      course = Course.objects.get(courseName=args[0])
+      user = Users.objects.get(username=args[1])
+      ta = TA.create(user, True, 1)
+      ta.save()
+      course.assign_TA(ta)
+      return "Successfully added TA to course"
+    elif cmd == "sendEmail":
+      return "Failed- Unimplemented"
+    elif cmd == "removeTACourse":
+      return "Pass - implemented in Web Interface not Command Line."
+      return
+    elif cmd == "assignTALab":
+      return "Pass - implemented in Web Interface not Command Line."
+      lab = Lab.objects.get(labNumber=args[0])
+      user = Users.objects.get(username=args[1])
+      ta = TA.create(user, True, 1)
+      ta.save()
+      lab.assign_TA(ta)
+      return "Successfully added TA to lab"
+    elif cmd == "removeTALab":
+      return "Pass - implemented in Web Interface not Command Line."
+      return
+    elif cmd == "courseAssignments":
+      return "Pass - implemented in Web Interface not Command Line."
+      return
+    elif cmd == "readTAAssignment":
+      return "Pass - implemented in Web Interface not Command Line."
+      return
+    elif cmd == "readAllTAAssignment":
+      return "Pass - implemented in Web Interface not Command Line."
+      return
+    elif cmd == "readPublicContactInfo":
+      return "Pass - implemented in Web Interface not Command Line."
+    elif cmd == "readAllTAAssignments":
+      return "Pass - implemented in Web Interface not Command Line."
+    elif cmd == "editAccount":
+      return "Pass - implemented in Web Interface not Command Line."
+    else:
+      return "Unrecognized command: " + cmd
 
-    def __str__(self):
-        """return this user as a string of format "username, role"
-
-        :return:
-        """
-        roles = "User " + self.username + " has "
-        if self.roles > 0:
-            roles += self.printRoles()
-        else:
-            roles += "no "
-        return roles + "role permissions."
+  def getActiveUser(self, request):
+    if request.user.is_authenticated:
+      return request.user
+    else:
+      return "no one logged in"

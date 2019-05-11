@@ -34,7 +34,7 @@ class CreateCourse(View):
     course_number_already_exists = Course.objects.filter(courseNumber=course_number)
     create = False
 
-    if permission_check and not course_name_already_exists and not course_number_already_exists:
+    if permission_check and not course_name_already_exists:
         new_course = Course.create(course_name,department,course_number)
         new_course.save()
         create = True

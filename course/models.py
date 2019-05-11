@@ -9,7 +9,7 @@ class Course(models.Model):
     courseName = models.CharField(max_length=64)
     department = models.CharField(max_length=64)
     courseNumber = models.IntegerField()
-    instructor = models.ForeignKey('users.Users', null=True, on_delete=models.DO_NOTHING)
+    instructor = models.ForeignKey('users.Users', null=True, on_delete=models.CASCADE)
     labs = models.ManyToManyField(Lab)
     TAs = models.ManyToManyField(TA)
 

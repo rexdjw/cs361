@@ -8,7 +8,7 @@ from users.models import Users
 class TA(models.Model):
     graderStatus = models.BooleanField()
     numberOfLabs = models.IntegerField()
-    account = models.ForeignKey(Users, on_delete=models.DO_NOTHING)
+    account = models.ForeignKey(Users, on_delete=models.CASCADE)
 
     @classmethod
     def create(cls, account, grader_status=None, number_of_labs=None):

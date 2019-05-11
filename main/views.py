@@ -113,7 +113,7 @@ class DeleteUsers(View):
     usr = username == dUser.username
 
     delete = False
-    if ok and auth and usr:
+    if ok and (auth or aUser == dUser) and usr:
       dUser.delete()
       delete = True
     return render(request, 'deleteaccount.html',

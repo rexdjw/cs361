@@ -18,7 +18,9 @@
     <li style = "float:left"><a href="{% url 'AllCourses' %}">All Courses</a></li>
     <li style = "float:left"><a href="{% url 'createAccount' %}">Create New User</a></li>
     <li style = "float:left"><a href="{% url 'createCourse' %}">Create New Course</a></li>
+
     <li style = "float:right" class="active"><a href="{% url 'logout' %}">Logout</a></li>
+    <li style = "float:right"><a href="{% url 'editMyAccount' %}">Account</a></li>
 
 {% else %}
     <li style = "float:left"><a href="{% url 'start'  %}">Command Line</a></li>

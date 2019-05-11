@@ -1,0 +1,27 @@
+<!-- templates/editaccount.html -->
+{% extends 'links.html' %}
+
+{% block title %}Edit My Account{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+
+    {% if edit %}
+        <p>Account edited successfully.</p>
+    {% endif %}
+    {% if not edit %}
+        <p>{{ message }}</p>
+        <form method="post" action="/users/editMyAccount/{{eUser.username}}">
+            {% csrf_token %}
+            Username: <input id="username" type="text" name="username" value={{ eUser.username }}><br>
+            <input type="submit" value="Submit">
+
+            <br><a href="{% url 'password_change' %}">Change Password</a>
+        </form>
+    {% endif %}
+{% else %}
+  <p>You are not logged in</p>
+  <a href="{% url 'login' %}">login</a> |
+  <a href="{% url 'signup' %}">signup</a>
+{% endif %}
+{% endblock %}

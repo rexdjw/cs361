@@ -16,7 +16,6 @@
         <form method="post" action="/users/editaccount/{{eUser.username}}">
             {% csrf_token %}
             Username: <input id="username" type="text" name="username" value={{ eUser.username }}><br>
-            Password: <input id="password" type="text" name="password" value="<hashed password>"><br>
             Roles: <input id="roles" type="number" name="roles" min = 0 max = 15 value={{ eUser.roles }}><br>
             [Numerical: 1 - TA; 2 - Instructor; 4 - Administrator; 8 - Supervisor]<br>
             [0 - no permission; Sum for multiple permission e.g. 3 - TA/Instructor]<br>

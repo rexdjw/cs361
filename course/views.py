@@ -122,7 +122,6 @@ class AssignTA(View):
     except:
       tmp = TA.create(usr)
       tmp.graderStatus = request.POST.get("graderStatus", False)
-      print("here is " + request.POST.get("graderStatus"))
       tmp.numberOfLabs = request.POST.get("numLabs")
       tmp.save()
 

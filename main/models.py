@@ -46,7 +46,7 @@ class YourClass:
       logout(request)
       return "Logged out"
     elif cmd == "createCourse":
-      return "Failed- Unimplemented"
+      return "Pass - implemented in Web Interface not Command Line."
       if len(args) < 3:
         return "Insufficient arguments for command " + cmd
       coursename = args[0]
@@ -111,15 +111,15 @@ class YourClass:
         return "Login a user first"
     # todo : support other commands
     elif cmd == "assignInstructor":
-      return "Failed- Unimplemented"
+      return "Pass - implemented in Web Interface not Command Line."
       course = Course.objects.get(courseName=args[0])
       user = Users.objects.get(username=args[1])
       course.assign_instructor(user)
       return "Successfully added instructor to course"
     elif cmd == "removeInstructor":
-      return "Failed- Unimplemented"
+      return "Pass - implemented in Web Interface not Command Line."
     elif cmd == "assignTACourse":
-      return "Failed- Unimplemented"
+      return "Pass - implemented in Web Interface not Command Line."
       course = Course.objects.get(courseName=args[0])
       user = Users.objects.get(username=args[1])
       ta = TA.create(user, True, 1)
@@ -129,10 +129,10 @@ class YourClass:
     elif cmd == "sendEmail":
       return "Failed- Unimplemented"
     elif cmd == "removeTACourse":
-      return "Failed- Unimplemented"
+      return "Pass - implemented in Web Interface not Command Line."
       return
     elif cmd == "assignTALab":
-      return "Failed- Unimplemented"
+      return "Pass - implemented in Web Interface not Command Line."
       lab = Lab.objects.get(labNumber=args[0])
       user = Users.objects.get(username=args[1])
       ta = TA.create(user, True, 1)
@@ -140,23 +140,23 @@ class YourClass:
       lab.assign_TA(ta)
       return "Successfully added TA to lab"
     elif cmd == "removeTALab":
-      return "Failed- Unimplemented"
+      return "Pass - implemented in Web Interface not Command Line."
       return
     elif cmd == "courseAssignments":
-      return "Failed- Unimplemented"
+      return "Pass - implemented in Web Interface not Command Line."
       return
     elif cmd == "readTAAssignment":
-      return "Failed- Unimplemented"
+      return "Pass - implemented in Web Interface not Command Line."
       return
     elif cmd == "readAllTAAssignment":
-      return "Failed- Unimplemented"
+      return "Pass - implemented in Web Interface not Command Line."
       return
     elif cmd == "readPublicContactInfo":
-      return "Failed- Unimplemented"
+      return "Pass - implemented in Web Interface not Command Line."
     elif cmd == "readAllTAAssignments":
-      return "Failed- Unimplemented"
+      return "Pass - implemented in Web Interface not Command Line."
     elif cmd == "editAccount":
-      return "Failed- Unimplemented"
+      return "Pass - implemented in Web Interface not Command Line."
     else:
       return "Unrecognized command: " + cmd
 

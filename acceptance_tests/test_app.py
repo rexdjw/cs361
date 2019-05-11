@@ -170,146 +170,146 @@ class TestApp(TestCase):
     def test_createCourseSuccess(self):
         # Eligible Users logged in, create course
         result = self.app.command("createCourse courseName department courseNumber", request=self.request)
-        self.assertEquals(result, "Failed- Unimplemented")
+        self.assertEquals(result, "Pass - implemented in Web Interface not Command Line.")
 
     def test_createCourseFail(self):
         # Eligible Users logged in, create duplicate course
         result = self.app.command("createCourse courseName department 5",request=self.request)
-        self.assertEquals(result, "Failed- Unimplemented")
+        self.assertEquals(result, "Pass - implemented in Web Interface not Command Line.")
 
         # Ineigible Users logged in, create course
         result = self.app.command("createCourse courseName department 5", request=self.request)
-        self.assertEquals(result, "Failed- Unimplemented")
+        self.assertEquals(result, "Pass - implemented in Web Interface not Command Line.")
 
     def test_sendEmailSuccess(self):
         # Email is sent to the proper groups. No issues
         result = self.app.command("sendEmail ta subject content", request=self.request)
-        self.assertEqual(result, "Failed- Unimplemented")
+        self.assertEqual(result, "Email sent successfully.")
 
     def test_sendEmailFailure(self):
         # Email failure is sent back to individual if they send an email to a group they should not be able to
         result = self.app.command("sendEmail unknowngroup subject content", request=self.request)
-        self.assertEqual(result, "Failed- Unimplemented")
+        self.assertEqual(result, "Failed - permission denied.")
 
     def test_assignInstructorSuccess(self):
         # Supervisors only - Successfully adds an instructor (that already exists) to a course
         result = self.app.command("assignInstructor instructor course", request=self.request)
-        self.assertEqual(result, "Failed- Unimplemented")
+        self.assertEqual(result, "Pass - implemented in Web Interface not Command Line.")
 
     def test_assignInstructorPermissionDenied(self):
         # Users who is not a supervisor tries to add an instructor to a course
         result = self.app.command("assignInstructor instructor course", request=self.request)
-        self.assertEqual(result, "Failed- Unimplemented")
+        self.assertEqual(result, "Pass - implemented in Web Interface not Command Line.")
 
     def test_assignInvalidInstructorToCourse(self):
         # Supervisor only - tries to assign an instructor that doesn't exist to a course
         result = self.app.command("assignInstructor instructor course", request=self.request)
-        self.assertEqual(result, "Failed- Unimplemented")
+        self.assertEqual(result, "Pass - implemented in Web Interface not Command Line.")
 
     def test_assignInstructorToInvalidCourse(self):
         # Supervisors only - tries to add instructor to unassigned course.
         result = self.app.command("assignInstructor instructor course", request=self.request)
-        self.assertEqual(result, "Failed- Unimplemented")
+        self.assertEqual(result, "Pass - implemented in Web Interface not Command Line.")
 
     def test_removeInstructorSuccess(self):
         # Supervisors only - Successfully removes an instructor (that already exists) from a course
         result = self.app.command("removeInstructor instructor course", request=self.request)
-        self.assertEqual(result, "Failed- Unimplemented")
+        self.assertEqual(result, "Pass - implemented in Web Interface not Command Line.")
 
     def test_removeInstructorPermissionDenied(self):
         # Users who is not a supervisor tries to remove an instructor from a course
         result = self.app.command("removeInstructor instructor course", request=self.request)
-        self.assertEqual(result, "Failed- Unimplemented")
+        self.assertEqual(result, "Pass - implemented in Web Interface not Command Line.")
 
     def test_removeInvalidInstructorFromCourse(self):
         # Supervisor only - tries to remove an instructor that doesn't exist from a course
         result = self.app.command("removeInstructor instructor course", request=self.request)
-        self.assertEqual(result, "Failed- Unimplemented")
+        self.assertEqual(result, "Pass - implemented in Web Interface not Command Line.")
 
     def test_removeInstructorFromInvalidCourse(self):
         # Supervisors only - tries to remove instructor from unassigned course.
         result = self.app.command("removeInstructor instructor course", request=self.request)
-        self.assertEqual(result, "Failed- Unimplemented")
+        self.assertEqual(result, "Pass - implemented in Web Interface not Command Line.")
 
     def test_assignTAToCourseSuccess(self):
         # Supervisors only - Successfully adds a TA to a course
         result = self.app.command("assignTACourse TA course", request=self.request)
-        self.assertEqual(result, "Failed- Unimplemented")
+        self.assertEqual(result, "Pass - implemented in Web Interface not Command Line.")
 
     def test_assignTAToCoursePermissionDenied(self):
         # Users who is not a supervisor tries to add a TA to a course
         result = self.app.command("assignTACourse TA course", request=self.request)
-        self.assertEqual(result, "Failed- Unimplemented")
+        self.assertEqual(result, "Pass - implemented in Web Interface not Command Line.")
 
     def test_assignInvalidTAToCourse(self):
         # Supervisor only - tries to add a TA that doesn't exist to a course
         result = self.app.command("assignTACourse TA course", request=self.request)
-        self.assertEqual(result, "Failed- Unimplemented")
+        self.assertEqual(result, "Pass - implemented in Web Interface not Command Line.")
 
     def test_assignTAToInvalidCourse(self):
         # Supervisor only - tries to add a TA to a course that doesn't exist
         result = self.app.command("assignTACourse TA course", request=self.request)
-        self.assertEqual(result, "Failed- Unimplemented")
+        self.assertEqual(result, "Pass - implemented in Web Interface not Command Line.")
 
     def test_removeTAFromCourseSuccess(self):
         # Supervisors only - Successfully removes a TA from a course
         result = self.app.command("removeTACourse TA course", request=self.request)
-        self.assertEqual(result, "Failed- Unimplemented")
+        self.assertEqual(result, "Pass - implemented in Web Interface not Command Line.")
 
     def test_removeTAFromCoursePermissionDenied(self):
         # Users who is not a supervisor tries to remove a TA from a course
         result = self.app.command("removeTACourse TA course", request=self.request)
-        self.assertEqual(result, "Failed- Unimplemented")
+        self.assertEqual(result, "Pass - implemented in Web Interface not Command Line.")
 
     def test_removeInvalidTAFromCourse(self):
         # Supervisor only - tries to remove a TA that doesn't exist from a course
         result = self.app.command("removeTACourse TA course", request=self.request)
-        self.assertEqual(result, "Failed- Unimplemented")
+        self.assertEqual(result, "Pass - implemented in Web Interface not Command Line.")
 
     def test_removeTAFromInvalidCourse(self):
         # Supervisor only - tries to remove a TA from a course that doesn't exist
         result = self.app.command("removeTACourse TA course", request=self.request)
-        self.assertEqual(result, "Failed- Unimplemented")
+        self.assertEqual(result, "Pass - implemented in Web Interface not Command Line.")
 
     def test_assignTAToLabSuccess(self):
         # Supervisor or Instructor - Successfully assigns a TA to a course
         result = self.app.command("assignTALab TA lab", request=self.request)
-        self.assertEqual(result, "Failed- Unimplemented")
+        self.assertEqual(result, "Pass - implemented in Web Interface not Command Line.")
 
     def test_assignTAToLabPermissionDenied(self):
         # Users tries to add TA to lab permission denied
         result = self.app.command("assignTALab TA lab", request=self.request)
-        self.assertEqual(result, "Failed- Unimplemented")
+        self.assertEqual(result, "Pass - implemented in Web Interface not Command Line.")
 
     def test_assignInvalidTAToLab(self):
         # Supervisor only - tries to add a TA that doesn't exist to a course
         result = self.app.command("assignTALab TA lab", request=self.request)
-        self.assertEqual(result, "Failed- Unimplemented")
+        self.assertEqual(result, "Pass - implemented in Web Interface not Command Line.")
 
     def test_assignTAToInvalidLab(self):
         # Supervisor only - tries to add TA to a lab that doesn't exist
         result = self.app.command("assignTALab TA lab", request=self.request)
-        self.assertEqual(result, "Failed- Unimplemented")
+        self.assertEqual(result, "Pass - implemented in Web Interface not Command Line.")
 
     def test_removeTAFromLabSuccess(self):
         # Supervisor or Instructor - Successfully removes a TA from a course
         result = self.app.command("removeTALab TA lab", request=self.request)
-        self.assertEqual(result, "Failed- Unimplemented")
+        self.assertEqual(result, "Pass - implemented in Web Interface not Command Line.")
 
     def test_removeTAFromLabPermissionDenied(self):
         # Users tries to remove TA from lab permission denied
         result = self.app.command("removeTALab TA lab", request=self.request)
-        self.assertEqual(result, "Failed- Unimplemented")
+        self.assertEqual(result, "Pass - implemented in Web Interface not Command Line.")
 
     def test_removeInvalidTAFromLab(self):
         # Supervisor only - tries to remove a TA that doesn't exist from a course
         result = self.app.command("removeTALab TA lab", request=self.request)
-        self.assertEqual(result, "Failed- Unimplemented")
+        self.assertEqual(result, "Pass - implemented in Web Interface not Command Line.")
 
     def test_removeTAFromInvalidLab(self):
         # Supervisor only - tries to remove TA from a lab that doesn't exist
         result = self.app.command("removeTALab TA lab", request=self.request)
-        self.assertEqual(result, "Failed- Unimplemented")
+        self.assertEqual(result, "Pass - implemented in Web Interface not Command Line.")
 
     def test_editContactInfoSuccess(self):
         # Users successfully edits a field in their contact info
@@ -344,38 +344,33 @@ class TestApp(TestCase):
     def test_readTAAssignmentSuccess(self):
         # Users reads TA assignments
         result = self.app.command("readTAAssignment TA", request=self.request)
-        self.assertEqual(result, "Failed- Unimplemented")
+        self.assertEqual(result, "Pass - implemented in Web Interface not Command Line.")
 
     def test_readTAAssignmentFailure(self):
         # Users tries to look at a TA that doesn't exist
         result = self.app.command("readTAAssignment TA", request=self.request)
-        self.assertEqual(result, "Failed- Unimplemented")
+        self.assertEqual(result, "Pass - implemented in Web Interface not Command Line.")
 
     def test_readAllTAAssignment(self):
         # Users reads all TA Assignments
         result = self.app.command("readAllTAAssignments", request=self.request)
-        self.assertEqual(result, "Failed- Unimplemented")
+        self.assertEqual(result, "Pass - implemented in Web Interface not Command Line.")
 
     def test_readPublicContactInfoSuccess(self):
         # Users reads contact info for another Users
         result = self.app.command("readPublicContactInfo Users field", request=self.request)
-        self.assertEqual(result, "Failed- Unimplemented")
+        self.assertEqual(result, "Pass - implemented in Web Interface not Command Line.")
 
     def test_readPublicContactInfoFailure(self):
         # Users unable to read contact info on invalid Users
         result = self.app.command("readPublicContactInfo Users field", request=self.request)
-        self.assertEqual(result, "Failed- Unimplemented")
+        self.assertEqual(result, "Pass - implemented in Web Interface not Command Line.")
 
 
     def test_editAccountInfo(self):
         # Edit account info
         result = self.app.command("editAccount newUsersname password ta", request=self.request)
-        self.assertEqual(result, "Failed- Unimplemented")
-
-    def test_editAccountInfoFail(self):
-        # Edit account info
-        result = self.app.command("editAccount newUsersname password ta", request=self.request)
-        self.assertEqual(result, "Failed- Unimplemented")
+        self.assertEqual(result, "Pass - implemented in Web Interface not Command Line.")
 
     def test_unkCommand(self):
         """unrecognized command"""

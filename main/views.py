@@ -3,6 +3,10 @@ from django.views import View
 from main.models import YourClass
 from users.models import Users
 from contactinfo.models import ContactInfo
+from django.contrib.auth.forms import (
+    AuthenticationForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm,
+)
+from django.contrib.auth import update_session_auth_hash
 # Create your views here.
 
 
@@ -61,6 +65,8 @@ class CreateUsers(View):
       return render(request, 'createaccount.html', {"ok" : ok, "auth" : auth, "create" : create,
                                                     "message": "Error! Account already exists!"})
 class EditUsers(View):
+
+
   def get(self, request):
     aUser = request.user
     eUser = Users.objects.filter(username=request.path.rsplit('/')[-1])[0]
@@ -73,7 +79,7 @@ class EditUsers(View):
     aUser = request.user
     eUser = Users.objects.filter(username=request.path.rsplit('/')[-1])[0]
     username = request.POST.get("username", "")
-    password = request.POST.get("password", "")
+    # = request.POST.get("password", "")
     roles = int(request.POST.get("roles", ""))
     ok = aUser.is_at_least(4)
     auth = aUser.is_above(eUser.roles) and aUser.is_above(roles)
@@ -81,7 +87,7 @@ class EditUsers(View):
     edit = False
     if ok and auth:
         eUser.reset_username(username)
-        eUser.set_password(password)
+       # eUser.set_password(password)
         eUser.reset_roles(roles)
         eUser.save()
         edit = True

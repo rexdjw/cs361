@@ -13,7 +13,7 @@
         <p>{{ message }}</p>
         <form method="post" action="/users/createCourse">
             {% csrf_token %}
-            Course Name: <input id="Course Name" type="text" name="Course Name" value="" pattern ="^[^\-]+$" title="Dash Character Invalid" required><br>
+            Course Name: <input id="Course Name" type="text" name="Course Name" value="" pattern="^[a-zA-Z0-9]*$" placeholder="[A-Za-z0-9]" title="No Special Characters - use Camel Case" required><br>
             Department: <input id="Department" type="text" name="Department" value="" required><br>
             Course Number: <input id="Course Number" type="number" name="Course Number" min=000 max = 999 required><br>
             <input type="submit" value="Submit">

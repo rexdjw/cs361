@@ -15,6 +15,7 @@
             {% csrf_token %}
             Lab Number: <input id="Lab Number" type="number" name="Lab Number" value="" min = 000 max = 999 required><br>
             Assign TA:<select name="TAs">
+                <option disabled selected value> -- select --</option>
                 {% for ta in course.TAs.all %}
                 <option value = {{ ta }}>{{ ta }}</option>
                 {%  endfor %}
